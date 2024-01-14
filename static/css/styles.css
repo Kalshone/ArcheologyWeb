@@ -217,6 +217,7 @@ hr {
   flex: 1;
   padding: 20px;
   padding-top: 70px;
+  overflow-x: hidden;
 }
 
 .main-content .stats-container {
@@ -306,6 +307,7 @@ hr {
 .table-container {
   overflow-x: auto;
   width: 100%;
+  padding-bottom: 15px;
 }
 
 .table {
@@ -327,6 +329,7 @@ hr {
   overflow: hidden;
   text-overflow: ellipsis;
   transition: all 0.3s ease;
+  white-space: nowrap;
 }
 
 .table tbody tr:nth-child(odd) {
@@ -344,7 +347,7 @@ hr {
   cursor: pointer;
 }
 
-@media screen and (max-width: 1200px) {
+/* @media screen and (max-width: 1200px) {
   .table {
     display: block;
     overflow-x: auto;
@@ -355,7 +358,7 @@ hr {
   .table td {
     min-width: 100px;
   }
-}
+} */
 
 .column-toggle {
   font-size: 12px;
