@@ -23,13 +23,19 @@ body {
   background-color: #fbf9f6; 
 }
 
+h1 {
+  font-size: 1.1em;
+  font-weight: 700;
+  padding-top: 5px;
+}
+
 h2 {
   font-size: 0.9em;
   font-weight: 600;
 }
 
 h3 {
-  font-size: 0.7em;
+  font-size: 0.8em;
   font-weight: 600;
   color: #997a63;
 }
@@ -67,7 +73,7 @@ hr {
   color: #997a63;
   font-weight: 600;
   font-size: 0.8em;
-  padding: 15px;
+  padding: 10px;
   border-radius: 10px;
   margin-bottom: 10px;
   transition: background-color 0.3s ease;
@@ -118,5 +124,52 @@ hr {
   border-radius: 25%;
   color: #ffffff;
   margin-right: 10px;
+  box-shadow: 0 2px 6px rgba(180, 180, 180, 0.1);
+}
+
+
+/* MAIN CONTENT */
+.main-content {
+  flex: 1;
+  padding: 20px;
+  padding-top: 70px;
+}
+
+.main-content .header {
+  display: flex;
+  justify-content: space-between;
+  /* margin-bottom: 30px; */
+}
+
+.main-content .header .stats {
+  display: flex;
+  gap: 30px;
+  margin-top: 20px;
+  flex: 1;
+}
+
+.main-content .header .stat-card {
+  display: flex;
+  justify-content: space-between;
+  background-color: #ffffff;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 1px 6px rgba(153, 153, 153, 0.1);
+  width: 150px;
+  text-align: left;
+  flex: 1;
+}
+
+.main-content .header .stat-values {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.main-content .header .fas {
+  padding: 12px;
+  background-color: #5a7d5a;
+  border-radius: 25%;
+  color: #ffffff;
   box-shadow: 0 2px 6px rgba(180, 180, 180, 0.1);
 }
