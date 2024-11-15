@@ -1,0 +1,122 @@
+@font-face {
+  font-family: 'Helvetica Neue';
+  src: url('{% static "fonts/HelveticaNeueRoman.otf" %}') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  color: #4f3c1f;
+}
+
+
+/* STANDARD */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Helvetica', Arial, sans-serif;
+  color: #4f3c1f;
+}
+
+body {
+  display: flex;
+  min-height: 100vh;
+  /* background-color: #F8F9FA; */
+  background-color: #fbf9f6; 
+}
+
+h2 {
+  font-size: 0.9em;
+  font-weight: 600;
+}
+
+h3 {
+  font-size: 0.7em;
+  font-weight: 600;
+  color: #997a63;
+}
+
+
+/* SIDEBAR */
+.logo {
+  margin: 20px;
+  font-weight: 700;
+  text-align: center;
+  /* color: #4f3c1f; */
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  background: #333;
+  /* color: #4f3c1f; */
+  margin-top: 20px;
+  margin-bottom: 20px;
+  background-image: linear-gradient(to right, #fbf9f6, #997a63, #fbf9f6);
+}
+
+.sidebar {
+  min-width: 250px;
+  width: 250px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.sidebar a {
+  text-decoration: none;
+  color: #997a63;
+  font-weight: 600;
+  font-size: 0.8em;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  transition: background-color 0.3s ease;
+  display: block;
+}
+
+.sidebar .current-page,
+.sidebar .current-page:hover {
+  background-color: #ffffff; 
+  color: #4f3c1f;
+  box-shadow: 0 2px 6px rgba(180, 180, 180, 0.1);
+}
+
+.sidebar a:hover {
+  color: #4f3c1f;
+  /* background-color: #e2e2e2;  */
+  background-color: #f5f0eb; 
+}
+
+.sidebar .help {
+  color: white;
+  background-color: #5a7d5a;
+  font-size: 0.8em;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.sidebar .footer {
+  color: #997a63;
+  font-size: 0.4em;
+  text-align: center;
+}
+
+.sidebar .fas {
+  padding: 10px;
+  background-color: #ffffff;
+  border-radius: 25%;
+  color: #5a7d5a;
+  margin-right: 10px;
+  box-shadow: 0 2px 6px rgba(180, 180, 180, 0.1);
+}
+
+.sidebar .current-page .fas {
+  padding: 10px;
+  background-color: #5a7d5a;
+  border-radius: 25%;
+  color: #ffffff;
+  margin-right: 10px;
+  box-shadow: 0 2px 6px rgba(180, 180, 180, 0.1);
+}

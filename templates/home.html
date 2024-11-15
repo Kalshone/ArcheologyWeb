@@ -1,0 +1,57 @@
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Archaeology Dashboard</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div>
+      <div class="logo">U OF T ARCHEOLOGY<hr></div>
+      
+      <a href="#" class="current-page"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+      <a href="#"><i class="fas fa-map"></i> Sites</a>
+      <a href="#"><i class="fas fa-layer-group"></i> Areas</a>
+      <a href="#"><i class="fas fa-archive"></i> Artifacts</a>
+      <a href="#"><i class="fas fa-user"></i> Profile</a>
+    </div>
+    <div>
+      <div class="help">Need Help?</div>
+      <div class="footer">&copy; 2024 UofT Department of Anthropology</div>
+    </div>
+  </div> 
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Header -->
+    <h2>Dashboard</h2>
+    {% comment %} <p>Here you can view and manage all the sites, areas, and artifacts in your database. Use the sidebar to navigate to different sections of the dashboard.</p>{% endcomment %}
+    <!-- Dashboard Content -->
+    <div class="header"> 
+      <div class="stats">
+        <div class="stat-card">
+          <h3>Total Sites</h3>
+          <p>123</p>
+        </div>
+        <div class="stat-card">
+          <h3>Total Areas</h3>
+          <p>45</p>
+        </div>
+        <div class="stat-card">
+          <h3>Total Artifacts</h3>
+          <p>789</p>
+        </div>
+      </div>
+    </div> 
+
+  </div>
+
+
+</body>
+</html>
