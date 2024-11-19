@@ -22,4 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('myapp.urls')),
     path('sites/', views.sites, name='sites'),
+    path('delete/<str:model_name>/<int:object_id>/', views.delete_object, name='delete_object'),
 ]

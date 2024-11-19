@@ -3,6 +3,9 @@ from django.http import HttpResponse
 from django.db.utils import IntegrityError
 from .models import Site
 
+from django.shortcuts import redirect, get_object_or_404
+from django.apps import apps
+
 def home(request):
     sites = Site.objects.all()
     return render(request, 'home.html', {'sites': sites})
@@ -30,5 +33,11 @@ def sites(request):
     #     headers = []
     
     return render(request, 'sites.html', {'sites': sites, 'headers': headers})
+
+def delete_object(request, model_name, object_id):
+    model = apps.get_model(app_label='myapp', model_name=model_name)
+    obj = get_object_or_404(model, SiteID=object_id)
+    obj.delete()
+    return redirect('sites') 
     
 
