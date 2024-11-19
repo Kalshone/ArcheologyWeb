@@ -23,4 +23,5 @@ urlpatterns = [
     path('', include('myapp.urls')),
     path('sites/', views.sites, name='sites'),
     path('delete/<str:model_name>/<int:object_id>/', views.delete_object, name='delete_object'),
+    path('update_object/<str:model_name>/<int:object_id>/', views.update_object, name='update_object'), 
 ]

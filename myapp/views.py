@@ -40,3 +40,22 @@ def delete_object(request, model_name, object_id):
         return redirect(redirect_url)  # Redirect to the specified URL
     return HttpResponse(status=405)  # Method Not Allowed if not POST
 
+import json
+from django.views.decorators.http import require_POST
+
+@require_POST
+@csrf_exempt
+def update_object(request, model_name, object_id):
+    try:
+        model = apps.get_model(app_label='myapp', model_name=model_name)
+        obj = model.objects.get(pk=object_id)
+        data = json.loads(request.body)
+        for key, value in data.items():
+            field_name = key.replace('field', '')
+            setattr(obj, field_name, value)
+        obj.save()
+        return HttpResponse(json.dumps({'success': True}), content_type='application/json')
+    except model.DoesNotExist:
+        return HttpResponse(json.dumps({'success': False, 'error': f'{model_name} not found'}), content_type='application/json')
+    except Exception as e:
+        return HttpResponse(json.dumps({'success': False, 'error': str(e)}), content_type='application/json')
