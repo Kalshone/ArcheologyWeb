@@ -1,0 +1,109 @@
+{% load static %}
+{% load custom_filters %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sites</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+</head>
+<body>
+
+    <!-- Sidebar -->
+  <div class="sidebar">
+    <div>
+      <div class="logo">U OF T ARCHEOLOGY<hr></div>
+      
+      <a href="{% url 'home' %}"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
+      <a href="{% url 'sites' %}" class="current-page"><i class="fas fa-map"></i>Sites</a>
+      <a href="#"><i class="fas fa-layer-group"></i>Areas</a>
+      <a href="#"><i class="fas fa-archive"></i>Artifacts</a>
+      <a href="#"><i class="fas fa-user"></i>Profile</a>
+    </div>
+    <div>
+      <div class="help">Need Help?</div>
+      <div class="footer">&copy; 2024 UofT Department of Anthropology</div>
+    </div>
+  </div> 
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <h2>Sites</h2>
+    <div class="actions">
+        <button id="addSiteButton" onclick="openAddSiteForm()">Add New Site</button>
+    </div>
+
+    <!-- Add Site Modal -->
+    {% comment %} <div id="addSiteModal" class="modal">
+      <div class="modal-content">
+        <h2>Add New Site</h2>
+        <form id="addSiteForm">
+          {% for header in headers %}
+            {% if not forloop.first %}
+              <label for="{{ header.name }}">{{ header.verbose_name }}:</label>
+              <input type="text" id="{{ header.name }}" name="{{ header.name }}" required>
+            {% endif %}
+          {% endfor %}
+          <button type="submit">Add Site</button>
+          <span class="close" onclick="closeAddSiteModal()">&times;</span>
+        </form>
+      </div>
+    </div>  {% endcomment %}
+
+    <!-- Add Site Form -->
+    <div class="form">
+      {% comment %} <h2>Add New Site</h2> {% endcomment %}
+      <form id="addSiteForm" method="POST" action="{% url 'sites' %}">
+        <span class="close" onclick="closeAddSiteForm()">&times;</span>
+        {% csrf_token %}
+        {% for header in headers %}
+          {% if not forloop.first %}
+            <label for="{{ header.name }}">{{ header.verbose_name }}:</label>
+            <input type="text" id="{{ header.name }}" name="{{ header.name }}" required>
+          {% endif %}
+        {% endfor %}
+        <button type="submit">Add Site</button>
+      </form>
+    </div>
+
+    <!-- Sites Table -->
+    <table class="sites-table">
+      <thead>
+        <tr>
+          {% for header in headers %}
+          <th>{{ header.verbose_name }}</th>
+          {% endfor %}
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for site in sites %}
+        <tr>
+          {% for header in headers %}
+          <td>{{ site|attr:header.name }}</td>
+          {% endfor %}
+          <td>
+            <button onclick="editSite({{ site.id }})">Edit</button>
+            <button onclick="deleteSite({{ site.id }})">Delete</button>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    function openAddSiteForm() {
+      document.getElementById('addSiteForm').style.display = 'block';
+      document.getElementById('addSiteButton').style.display = 'none';
+    }
+  
+    function closeAddSiteForm() {
+      document.getElementById('addSiteForm').style.display = 'none';
+      document.getElementById('addSiteButton').style.display = 'block'; 
+    }
+  </script>
+
+</body>

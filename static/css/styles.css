@@ -19,7 +19,7 @@
 body {
   display: flex;
   min-height: 100vh;
-  /* background-color: #F8F9FA; */
+  /* background-color: # F8F9FA; */
   background-color: #fbf9f6; 
 }
 
@@ -46,14 +46,14 @@ h3 {
   margin: 20px;
   font-weight: 700;
   text-align: center;
-  /* color: #4f3c1f; */
+  /* color: # 4f3c1f; */
 }
 
 hr {
   border: 0;
   height: 1px;
   background: #333;
-  /* color: #4f3c1f; */
+  /* color: # 4f3c1f; */
   margin-top: 20px;
   margin-bottom: 20px;
   background-image: linear-gradient(to right, #fbf9f6, #997a63, #fbf9f6);
@@ -135,20 +135,20 @@ hr {
   padding-top: 70px;
 }
 
-.main-content .header {
+.main-content .stats-container {
   display: flex;
   justify-content: space-between;
   /* margin-bottom: 30px; */
 }
 
-.main-content .header .stats {
+.main-content .stats-container .stats {
   display: flex;
   gap: 30px;
   margin-top: 20px;
   flex: 1;
 }
 
-.main-content .header .stat-card {
+.main-content .stats-container .stat-card {
   display: flex;
   justify-content: space-between;
   background-color: #ffffff;
@@ -160,16 +160,130 @@ hr {
   flex: 1;
 }
 
-.main-content .header .stat-values {
+.main-content .stats-container .stat-values {
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
-.main-content .header .fas {
+.main-content .stats-container .fas {
   padding: 12px;
   background-color: #5a7d5a;
   border-radius: 25%;
   color: #ffffff;
   box-shadow: 0 2px 6px rgba(180, 180, 180, 0.1);
 }
+
+.main-content .actions button {
+  margin: 20px 0 20px 0;
+}
+
+
+/* TABLE */
+.sites-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  font-size: 14px;
+  /* margin: 10px 0 10px 0; */
+  box-shadow: 0 2px 6px rgba(180, 180, 180, 0.1);
+}
+
+.sites-table th,
+.sites-table td {
+  padding: 12px 15px;
+  text-align: left;
+}
+
+.sites-table tbody tr {
+  border-bottom: 1px solid #f5f0eb;
+}
+
+.sites-table tbody tr:nth-child(odd) {
+  background-color: #fbf9f6;
+}
+
+.sites-table tbody tr:hover {
+  background-color: #f5f0eb;
+}
+
+
+/* Action buttons */
+.main-content button {
+  background-color: transparent;
+  border: none;
+  padding: 10px 15px;
+  background-color: #5a7d5a;
+  color: #ffffff;
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-right: 5px;
+  box-shadow: 0 2px 6px rgba(180, 180, 180, 0.1);
+}
+
+.main-content button:hover {
+  background-color: #426b42;
+}
+
+/* .main-content button:disabled {
+  color: #636363;
+  background-color: #e2e2e2;
+  cursor: not-allowed;
+} */
+
+
+/* Form */
+#addSiteForm {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: none;
+  font-size: 14px;
+  margin-left: 15px;
+} 
+
+/* #addSiteForm.active {
+  display: block;
+} */
+
+.main-content .close {
+  margin-right: 15px;
+  cursor: pointer;
+}
+
+
+
+
+
+/* Status indicator styles
+.sites-table .fulfilled {
+  color: white;
+  background-color: #28a745;
+  padding: 5px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.sites-table .confirmed {
+  color: white;
+  background-color: #007bff;
+  padding: 5px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.sites-table .partially-shipped {
+  color: white;
+  background-color: #ffc107;
+  padding: 5px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+} */
