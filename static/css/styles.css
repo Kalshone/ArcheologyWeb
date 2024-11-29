@@ -195,6 +195,28 @@ hr {
   box-shadow: 0 2px 6px rgba(180, 180, 180, 0.1);
 }
 
+/* Dropdown styles */
+.dropdown-content {
+  display: none;
+  padding-left: 20px;
+}
+
+.dropdown.active .dropdown-content {
+  display: block;
+}
+
+/* Chevron rotation */
+.fa-chevron-right, .fa-chevron-down {
+  transition: transform 0.3s ease;
+  background-color: transparent !important; 
+}
+
+.dropdown.active .fa-chevron-right {
+  transform: rotate(90deg);
+}
+
+
+
 
 /* MAIN CONTENT */
 .main-content {

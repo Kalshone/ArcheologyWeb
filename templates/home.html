@@ -10,22 +10,68 @@
 </head>
 <body>
 
-    <!-- Sidebar -->
+  <!-- Sidebar -->
   <div class="sidebar">
     <div>
       <div class="logo">U OF T ARCHEOLOGY<hr></div>
       
-      <a href="{% url 'dashboard' %}" class="current-page"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
-      <a href="{% url 'sites' %}"><i class="fas fa-map"></i>Sites</a>
-      <a href="#"><i class="fas fa-layer-group"></i>Areas</a>
-      <a href="#"><i class="fas fa-archive"></i>Artifacts</a>
-      <a href="#"><i class="fas fa-user"></i>Profile</a>
+      <a href="{% url 'dashboard' %}" class="current-page">
+        <i class="fas fa-tachometer-alt"></i>Dashboard
+      </a>
+      
+      <!-- Location -->
+      <div class="dropdown">
+        <a href="#" class="dropdown-trigger">
+          <i class="fas fa-archive"></i>Location
+          <i class="fas fa-chevron-right"></i>
+        </a>
+        <div class="dropdown-content">
+          <a href="{% url 'sites' %}"><i class="fas fa-map"></i>Sites</a>
+          <a href=""><i class="fas fa-layer-group"></i>Areas</a>
+        </div>
+      </div>
+            
+      <!-- Collection -->
+      <div class="dropdown">
+        <a href="#" class="dropdown-trigger">
+          <i class="fas fa-archive"></i>Collection
+          <i class="fas fa-chevron-right"></i>
+        </a>
+        <div class="dropdown-content">
+          <a href=""><i class="fas fa-archive"></i>Pottery</a>
+          <a href=""><i class="fas fa-archive"></i>Other Artifacts</a>
+        </div>
+      </div>
+  
+      <!-- Reference Data -->
+      <div class="dropdown">
+        <a href="#" class="dropdown-trigger">
+          <i class="fas fa-book"></i>Reference Data
+          <i class="fas fa-chevron-right"></i>
+        </a>
+        <div class="dropdown-content">
+          <a href=""><i class="fas fa-mountain"></i>Soil Types</a>
+          <a href=""><i class="fas fa-boxes"></i>Material Types</a>
+          <a href=""><i class="fas fa-clock"></i>Time Periods</a>
+        </div>
+      </div>
+  
+      <!-- Administration -->
+      <div class="dropdown">
+        <a href="#" class="dropdown-trigger">
+          <i class="fas fa-cogs"></i>Administration
+          <i class="fas fa-chevron-right"></i>
+        </a>
+        <div class="dropdown-content">
+          <a href=""><i class="fas fa-exchange-alt"></i>Loans</a>
+          <a href=""><i class="fas fa-users"></i>Users</a>
+          <a href=""><i class="fas fa-key"></i>Permissions</a>
+        </div>
+      </div>
+      
+      <a href=""><i class="fas fa-user"></i>Profile</a>
     </div>
-    <div>
-      <div class="help">Need Help?</div>
-      <div class="footer">&copy; 2024 UofT Department of Anthropology</div>
-    </div>
-  </div> 
+  </div>
 
   <!-- Main Content -->
   <div class="main-content">
@@ -104,5 +150,32 @@
       </div>
     </div>
   </div>
+
+  <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+      const dropdowns = document.querySelectorAll('.dropdown');
+      
+      dropdowns.forEach(dropdown => {
+        const trigger = dropdown.querySelector('.dropdown-trigger');
+        
+        trigger.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          // Toggle active class on dropdown
+          dropdown.classList.toggle('active');
+          
+          // Find and toggle chevron icon
+          const chevron = this.querySelector('.fa-chevron-right, .fa-chevron-down');
+          if (chevron.classList.contains('fa-chevron-right')) {
+            chevron.classList.remove('fa-chevron-right');
+            chevron.classList.add('fa-chevron-down');
+          } else {
+            chevron.classList.remove('fa-chevron-down');
+            chevron.classList.add('fa-chevron-right');
+          }
+        });
+      });
+    });
+  </script>
 
 </body>
