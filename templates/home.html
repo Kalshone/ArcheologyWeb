@@ -15,7 +15,7 @@
     <div>
       <div class="logo">U OF T ARCHEOLOGY<hr></div>
       
-      <a href="{% url 'home' %}" class="current-page"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
+      <a href="{% url 'dashboard' %}" class="current-page"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
       <a href="{% url 'sites' %}"><i class="fas fa-map"></i>Sites</a>
       <a href="#"><i class="fas fa-layer-group"></i>Areas</a>
       <a href="#"><i class="fas fa-archive"></i>Artifacts</a>
@@ -30,6 +30,19 @@
   <!-- Main Content -->
   <div class="main-content">
     <h2>Dashboard</h2>
+
+    {% block content %}
+    {% if user.is_authenticated %}
+    Hi {{ user.username }}!
+    <form action="{% url 'logout' %}" method="post">
+      {% csrf_token %}
+      <button type="submit">Log Out</button>
+    </form>
+    {% else %}
+    <p>You are not logged in</p>
+    <a href="{% url 'login' %}">Log In</a>
+    {% endif %}
+    {% endblock %}
     <!-- Content -->
     <div class="stats-container"> 
       <div class="stats">

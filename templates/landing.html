@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>U of T Archaeology Project</title>
+    <link rel="stylesheet" href="{% static 'css/landing.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-logo">
+            <img src="{% static 'images/uoft-logo.png' %}" alt="UofT Logo">
+        </div>
+        <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#research">Research</a>
+            <a href="#contact">Contact</a>
+            <a href="{% url 'login' %}" class="nav-button">Login</a>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <div class="hero-title">
+            <h1>UofT Archaeology<br>Project</h1>
+            <p class="subtitle">Dig into History</p>
+        </div>
+        
+        <div class="hero-image">
+            <!-- Background image set in CSS -->
+        </div>
+
+        <div class="hero-description">
+            <p>Join Professor Edward Banning's archaeological research project, where modern technology uncovers ancient history. Our discoveries are reshaping our understanding of human civilization.</p>
+            <div class="landing-buttons">
+                <a href="{% url 'login' %}" class="button">Login</a>
+                <a href="{% url 'dashboard' %}" class="button button-guest">Guest Access</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

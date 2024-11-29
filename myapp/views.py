@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.db.utils import IntegrityError
 from .models import Site
-
+from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import redirect, get_object_or_404
 from django.apps import apps
 from django.http import HttpResponse
@@ -10,7 +10,26 @@ from django.views.decorators.csrf import csrf_exempt
 from urllib.parse import urlencode
 from django.contrib import messages
 
-def home(request):
+def landing_page(request):
+    # Render the landing page template
+    return render(request, 'landing.html')
+
+def login(request):
+    # Redirect to the dashboard view
+    return redirect('dashboard')
+
+def signup(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Account created successfully! Please log in.')
+            return redirect('login')
+    else:
+        form = UserCreationForm()
+    return render(request, 'registration/signup.html', {'form': form})
+
+def dashboard(request):
     sites = Site.objects.all()
     return render(request, 'home.html', {'sites': sites})
 
