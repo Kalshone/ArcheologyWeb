@@ -11,153 +11,234 @@
 </head>
 <body>
 
-    <!-- Sidebar -->
+  <!-- Sidebar -->
   <div class="sidebar">
     <div>
       <div class="logo">U OF T ARCHEOLOGY<hr></div>
       
-      <a href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
-      <a href="{% url 'sites' %}" class="current-page"><i class="fas fa-map"></i>Sites</a>
-      <a href="#"><i class="fas fa-layer-group"></i>Areas</a>
-      <a href="#"><i class="fas fa-archive"></i>Artifacts</a>
-      <a href="#"><i class="fas fa-user"></i>Profile</a>
+      <a href="{% url 'dashboard' %}" class="current-page">
+        <i class="fas fa-tachometer-alt"></i>Dashboard
+      </a>
+      
+      <!-- Provenience -->
+      <div class="dropdown">
+        <a href="#" class="dropdown-trigger">
+          <i class="fas fa-map-marked-alt"></i>Provenience
+          <i class="fas fa-chevron-right"></i>
+        </a>
+        <div class="dropdown-content">
+          <a href="{% url 'sites' %}"><i class="fas fa-map"></i>Sites</a>
+          <a href="#"><i class="fas fa-layer-group"></i>Areas</a>
+          <a href="#"><i class="fas fa-th"></i>Loci</a>
+          <a href="#"><i class="fas fa-shopping-bag"></i>Bags</a>
+          <a href="#"><i class="fas fa-box"></i>Artifacts</a>
+        </div>
+      </div>
+
+      <!-- Ceramics -->
+      <div class="dropdown">
+        <a href="#" class="dropdown-trigger">
+          <i class="fas fa-mortar-pestle"></i>Ceramics
+          <i class="fas fa-chevron-right"></i>
+        </a>
+        <div class="dropdown-content">
+          <a href="#"><i class="fas fa-cube"></i>Pottery Main</a>
+          <a href="#"><i class="fas fa-circle"></i>Rims</a>
+          <a href="#"><i class="fas fa-square"></i>Bases</a>
+          <a href="#"><i class="fas fa-grip-lines"></i>Handles</a>
+        </div>
+      </div>
+
+      <!-- Lithics -->
+      <div class="dropdown">
+        <a href="#" class="dropdown-trigger">
+          <i class="fas fa-gem"></i>Lithics
+          <i class="fas fa-chevron-right"></i>
+        </a>
+        <div class="dropdown-content">
+          <a href="#"><i class="fas fa-circle"></i>Cores</a>
+          <a href="#"><i class="fas fa-cut"></i>Blade/Flake Tools</a>
+          <a href="#"><i class="fas fa-shapes"></i>Debitage</a>
+        </div>
+      </div>
+
+      <!-- Metals & Glass -->
+      <div class="dropdown">
+        <a href="#" class="dropdown-trigger">
+          <i class="fas fa-coins"></i>Metals & Glass
+          <i class="fas fa-chevron-right"></i>
+        </a>
+        <div class="dropdown-content">
+          <a href="#"><i class="fas fa-hammer"></i>Metal Objects</a>
+          <a href="#"><i class="fas fa-wine-glass"></i>Glass</a>
+          <a href="#"><i class="fas fa-star"></i>Special Finds</a>
+        </div>
+      </div>
+
+      <!-- Organics -->
+      <div class="dropdown">
+        <a href="#" class="dropdown-trigger">
+          <i class="fas fa-bone"></i>Organics
+          <i class="fas fa-chevron-right"></i>
+        </a>
+        <div class="dropdown-content">
+          <a href="#"><i class="fas fa-skull"></i>Osteology</a>
+          <a href="#"><i class="fas fa-tools"></i>Worked Bone</a>
+        </div>
+      </div>
+
+      <!-- Documentation -->
+      <div class="dropdown">
+        <a href="#" class="dropdown-trigger">
+          <i class="fas fa-file-alt"></i>Documentation
+          <i class="fas fa-chevron-right"></i>
+        </a>
+        <div class="dropdown-content">
+          <a href="#"><i class="fas fa-camera"></i>Photos</a>
+          <a href="#"><i class="fas fa-handshake"></i>Loans</a>
+        </div>
+      </div>
     </div>
-    <div>
-      <div class="help">Need Help?</div>
-      <div class="footer">&copy; 2024 UofT Department of Anthropology</div>
-    </div>
-  </div> 
+  </div>
 
   <!-- Main Content -->
   <div class="main-content">
     <h2>Sites</h2>
+
+    <!-- Actions -->
     <div class="actions">
-        <button id="addSiteButton" onclick="openAddSiteForm()">Add New Site</button>
+      <button id="addSiteButton" onclick="openAddSiteForm()">Add New Site</button>
+      <button id="editButton" onclick="editSelected()" disabled>Edit Selected</button>
+      <button id="deleteButton" onclick="deleteSelected()" disabled>Delete Selected</button>
+      <button id="saveButton" onclick="saveSelected()" style="display:none;">Save Changes</button>
     </div>
 
-    <!-- Add Site Form -->
-    <div class="form">
-      <form id="addSiteForm" method="POST" action="{% url 'sites' %}">
-        <span class="close" onclick="closeAddSiteForm()">&times;</span>
-        {% csrf_token %}
-        {% for header in headers %}
-          {% if not forloop.first %}
-            <label for="{{ header.name }}">{{ header.verbose_name }}:</label>
-            <input type="text" id="{{ header.name }}" name="{{ header.name }}" required>
-          {% endif %}
-        {% endfor %}
-        <button type="submit">Add New Site</button>
-      </form>
-    </div>
-
-    <!-- Sites Table -->
+    <!-- Table -->
     <table class="sites-table">
-      <thead>
-        <tr>
-          {% for header in headers %}
-          <th>{{ header.verbose_name }}</th>
-          {% endfor %}
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for site in sites %}
-        <tr data-model-name="Site" data-object-id="{{ site.SiteID }}">
-          {% for header in headers %}
-          <td>{{ site|attr:header.name }}</td>
-          {% endfor %}
-          <td>
-            <button class="edit-button" onclick="editRow(this)">Edit</button>
-            <button class="save-button" onclick="saveRow(this)" style="display:none;">Save Changes</button>
-            <button onclick="deleteObject('Site', {{ site.SiteID }}, window.location.href)">Delete</button>
-          </td>
-        </tr>
+    <thead>
+      <tr>
+        <th><input type="checkbox" id="selectAll" onclick="toggleSelectAll()"></th>
+        {% for header in headers %}
+        <th>{{ header.verbose_name }}</th>
         {% endfor %}
-      </tbody>
+      </tr>
+    </thead>
+    <tbody>
+      {% for site in sites %}
+      <tr data-model-name="Site" data-object-id="{{ site.SiteID }}">
+        <td><input type="checkbox" class="row-selector" onclick="updateButtonStates()"></td>
+        {% for header in headers %}
+        <td>{{ site|attr:header.name }}</td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
     </table>
   </div>
 
   <script type="text/javascript">
-    function openAddSiteForm() {
-      document.getElementById('addSiteForm').style.display = 'block';
-      document.getElementById('addSiteButton').style.display = 'none';
-    }
-  
-    function closeAddSiteForm() {
-      document.getElementById('addSiteForm').style.display = 'none';
-      document.getElementById('addSiteButton').style.display = 'block'; 
+    function updateButtonStates() {
+      const selectedRows = document.querySelectorAll('.row-selector:checked').length;
+      const editButton = document.getElementById('editButton');
+      const deleteButton = document.getElementById('deleteButton');
+      const saveButton = document.getElementById('saveButton');
+      
+      editButton.disabled = selectedRows === 0;
+      deleteButton.disabled = selectedRows === 0;
     }
 
-    function deleteObject(modelName, objectId, redirectUrl) {
-      if (confirm('Are you sure you want to delete this item?')) {
-        fetch(`/delete/${modelName}/${objectId}/`, {
-          method: 'POST',
-          headers: {
-            'X-CSRFToken': '{{ csrf_token }}',
-          },
-        })
-        .then(response => {
-          if (response.ok) {
-            window.location.href = redirectUrl;  // Redirect to the specified URL
-          } else {
-            alert('Failed to delete the item.');
+    function toggleSelectAll() {
+      const selectAll = document.getElementById('selectAll');
+      const checkboxes = document.querySelectorAll('.row-selector');
+      checkboxes.forEach(checkbox => checkbox.checked = selectAll.checked);
+      updateButtonStates();
+    }
+
+    function editSelected() {
+      const selectedRows = document.querySelectorAll('.row-selector:checked');
+      selectedRows.forEach(checkbox => {
+        const row = checkbox.closest('tr');
+        const cells = row.querySelectorAll('td');
+        cells.forEach((cell, index) => {
+          if (index > 0) { // Skip checkbox cell
+            const value = cell.innerText;
+            cell.innerHTML = `<input type="text" value="${value}">`;
           }
         });
-      }
-    }
-
-    {% if messages %}
-    {% for message in messages %}
-    alert("{{ message }}");
-    {% endfor %}
-    {% endif %}
-
-    function editRow(button) {
-      const row = button.closest('tr');
-      const cells = row.querySelectorAll('td');
-      cells.forEach((cell, index) => {
-        if (index > 0 && !cell.querySelector('button')) { // Skip the first cell and buttons
-          const value = cell.innerText;
-          cell.innerHTML = `<input type="text" value="${value}">`;
-        }
       });
-      button.style.display = 'none';
-      button.nextElementSibling.style.display = 'inline';
+      
+      document.getElementById('editButton').style.display = 'none';
+      document.getElementById('deleteButton').style.display = 'none';
+      document.getElementById('saveButton').style.display = 'inline';
     }
-  
-    function saveRow(button) {
-      const row = button.closest('tr');
-      const cells = row.querySelectorAll('td');
-      const data = {};
-      cells.forEach((cell, index) => {
-        if (index > 0 && !cell.querySelector('button')) { // Skip the first cell and buttons
-          const input = cell.querySelector('input');
-          if (input) {
-            data[`field${index}`] = input.value;
-            cell.innerHTML = input.value;
+
+    function saveSelected() {
+      const selectedRows = document.querySelectorAll('.row-selector:checked');
+      const updates = [];
+
+      selectedRows.forEach(checkbox => {
+        const row = checkbox.closest('tr');
+        const cells = row.querySelectorAll('td');
+        const data = {};
+        cells.forEach((cell, index) => {
+          if (index > 0) { // Skip checkbox cell
+            const input = cell.querySelector('input');
+            if (input) {
+              data[`field${index-1}`] = input.value;
+              cell.innerHTML = input.value;
+            }
           }
-        }
+        });
+        
+        updates.push({
+          modelName: row.dataset.modelName,
+          objectId: row.dataset.objectId,
+          data: data
+        });
       });
-      const modelName = row.dataset.modelName;
-      const objectId = row.dataset.objectId;
-      fetch(`/update_object/${modelName}/${objectId}/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRFToken': '{{ csrf_token }}',
-        },
-        body: JSON.stringify(data),
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
+
+      Promise.all(updates.map(update => 
+        fetch(`/update_object/${update.modelName}/${update.objectId}/`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}',
+          },
+          body: JSON.stringify(update.data),
+        })
+      ))
+      .then(responses => {
+        if (responses.every(r => r.ok)) {
           alert('Changes saved successfully.');
         } else {
-          alert('Failed to save changes.');
+          alert('Failed to save some changes.');
         }
       });
-      button.style.display = 'none';
-      button.previousElementSibling.style.display = 'inline';
+
+      document.getElementById('editButton').style.display = 'inline';
+      document.getElementById('deleteButton').style.display = 'inline';
+      document.getElementById('saveButton').style.display = 'none';
+    }
+
+    function deleteSelected() {
+      const selectedRows = document.querySelectorAll('.row-selector:checked');
+      if (selectedRows.length === 0) return;
+      
+      if (confirm(`Are you sure you want to delete ${selectedRows.length} selected items?`)) {
+        const deletions = Array.from(selectedRows).map(checkbox => {
+          const row = checkbox.closest('tr');
+          return fetch(`/delete/${row.dataset.modelName}/${row.dataset.objectId}/`, {
+            method: 'POST',
+            headers: {
+              'X-CSRFToken': '{{ csrf_token }}',
+            },
+          });
+        });
+
+        Promise.all(deletions)
+          .then(() => window.location.reload())
+          .catch(() => alert('Failed to delete some items.'));
+      }
     }
   </script>
 
