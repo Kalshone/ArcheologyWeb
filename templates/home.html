@@ -26,7 +26,8 @@
           <i class="fas fa-chevron-right"></i>
         </a>
         <div class="dropdown-content">
-          <a href="{% url 'sites' %}"><i class="fas fa-map"></i>Sites</a>
+          {% comment %} <a href="{% url 'sites' %}"><i class="fas fa-map"></i>Sites</a> {% endcomment %}
+          <a href="{% url 'table_view' model_name='Site' %}"><i class="fas fa-map"></i>Sites</a>
           <a href="#"><i class="fas fa-layer-group"></i>Areas</a>
           <a href="#"><i class="fas fa-th"></i>Loci</a>
           <a href="#"><i class="fas fa-shopping-bag"></i>Bags</a>

@@ -9,6 +9,9 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from urllib.parse import urlencode
 from django.contrib import messages
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_protect
+import json
 
 def landing_page(request):
     # Render the landing page template
@@ -33,19 +36,53 @@ def dashboard(request):
     sites = Site.objects.all()
     return render(request, 'home.html', {'sites': sites})
 
-def sites(request):
-    if request.method == 'POST':
-        site_data = {field: request.POST[field] for field in request.POST if field != 'csrfmiddlewaretoken'}
-        try:
-            Site.objects.create(**site_data)
-        except IntegrityError:
-            messages.error(request, "A site with this number already exists.")
-            return redirect('sites')
+# def sites(request):
+#     if request.method == 'POST':
+#         site_data = {field: request.POST[field] for field in request.POST if field != 'csrfmiddlewaretoken'}
+#         try:
+#             site = Site.objects.create(**site_data)
+#             return JsonResponse({'success': True})
+#         except IntegrityError:
+#             return JsonResponse({'success': False, 'error': "A site with this number already exists."})
     
-    sites = Site.objects.all()
-    headers = [{'name': field.name, 'verbose_name': field.verbose_name} for field in Site._meta.fields]
-    return render(request, 'sites.html', {'sites': sites, 'headers': headers})
+#     sites = Site.objects.all()
+#     headers = [{
+#         'name': field.name,
+#         'verbose_name': field.verbose_name,
+#         'is_primary_key': field.primary_key,
+#         'type': field.get_internal_type()
+#     } for field in Site._meta.fields]
+#     return render(request, 'sites.html', {
+#         'sites': sites, 
+#         'headers': headers,
+#         'model_name': 'Site'
+#     })
 
+def table_view(request, model_name):
+    model = apps.get_model(app_label='myapp', model_name=model_name)
+    
+    if request.method == 'POST':
+        object_data = {field: request.POST[field] for field in request.POST if field != 'csrfmiddlewaretoken'}
+        try:
+            obj = model.objects.create(**object_data)
+            return JsonResponse({'success': True})
+        except IntegrityError:
+            return JsonResponse({'success': False, 'error': f"A {model_name} with this ID already exists."})
+    
+    objects = model.objects.all()
+    headers = [{
+        'name': field.name,
+        'verbose_name': field.verbose_name,
+        'is_primary_key': field.primary_key,
+        'type': field.get_internal_type()
+    } for field in model._meta.fields]
+    
+    return render(request, 'table_view.html', {
+        'objects': objects,
+        'headers': headers,
+        'model_name': model_name
+    })
+    
 @csrf_exempt
 def delete_object(request, model_name, object_id):
     if request.method == 'POST':

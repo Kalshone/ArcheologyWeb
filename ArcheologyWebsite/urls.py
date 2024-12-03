@@ -26,7 +26,9 @@ urlpatterns = [
     path("signup/", views.signup, name="signup"),
     # path('', include('myapp.urls')),
     
-    path('sites/', views.sites, name='sites'),
+    
+    path('<str:model_name>/', views.table_view, name='table_view'),
+    # path('sites/', views.sites, name='sites'),
     # path('areas/', views.areas, name='areas'),
     # path('pottery/', views.pottery, name='pottery'),
     # path('artifacts/', views.artifacts, name='artifacts'),

@@ -1,0 +1,233 @@
+{% load static %}
+{% load custom_filters %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ model_name }}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+</head>
+<body>
+    <div class="main-content">
+        <h2>{{ model_name }}</h2>
+    
+        <!-- Actions -->
+        <div class="actions">
+            <button id="addButton" onclick="openAddForm()">Add</button>
+            <button id="editButton" onclick="editSelected()" disabled>Edit Selected</button>
+            <button id="deleteButton" onclick="deleteSelected()" disabled>Delete Selected</button>
+            <button id="saveButton" onclick="saveSelected()" style="display:none;">Save Changes</button>
+        </div>
+    
+        <!-- Add to Table Form -->
+        <div id="addFormContainer" class="form-container">
+            <form id="addForm" method="post">
+            {% csrf_token %}
+            <div class="form-content">
+                {% for header in headers %}
+                {% if not header.is_primary_key %}
+                    <div class="form-group">
+                    <label for="{{ header.name }}">{{ header.verbose_name }}</label>
+                    {% if header.type == 'boolean' %}
+                        <select id="{{ header.name }}" name="{{ header.name }}" class="form-input" required>
+                        <option value="">Select an option</option>
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                        </select>
+                    {% elif header.type == 'choice' %}
+                      <select id="{{ header.name }}" name="{{ header.name }}" class="form-input" required>
+                        <option value="">Choose</option>
+                        {% for choice in header.choices %}
+                          <option value="{{ choice.value }}">{{ choice.display }}</option>
+                        {% endfor %}
+                      </select>
+                    {% else %}
+                      <input type="text" id="{{ header.name }}" name="{{ header.name }}" class="form-input" required>
+                    {% endif %}
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+            <div class="form-buttons">
+              <button type="submit" class="submit-button">Add</button>
+              <button type="button" onclick="closeAddSiteForm()" class="cancel-button">Cancel</button>
+            </div>
+          </form>
+        </div>
+    
+        <!-- Table -->
+        <table class="sites-table">
+        <thead>
+          <tr>
+            <th><input type="checkbox" id="selectAll" onclick="toggleSelectAll()"></th>
+            {% for header in headers %}
+            <th>{{ header.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+            {% for object in objects %}
+            <tr data-model-name="{{ model_name }}" data-object-id="{{ object|attr:headers.0.name }}">
+                <td><input type="checkbox" class="row-selector" onclick="updateButtonStates()"></td>
+                {% for header in headers %}
+                <td>{{ object|attr:header.name }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+      </div>
+    
+      <script type="text/javascript">
+        function openAddForm() {
+            const formContainer = document.getElementById('addFormContainer');
+            if (formContainer.style.display !== 'block') {
+              formContainer.style.display = 'block';
+            } else {
+              closeAddForm();
+            }
+          }
+          
+          function closeAddForm() {
+            const formContainer = document.getElementById('addFormContainer');
+            formContainer.style.display = 'none';
+          }
+
+
+          document.getElementById('addForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            
+            fetch('', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Record added successfully!');
+                    window.location.reload();
+                } else {
+                    alert(data.error || 'Error adding record');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to add record');
+            });
+          });
+    
+        function updateButtonStates() {
+          const selectedRows = document.querySelectorAll('.row-selector:checked').length;
+          const editButton = document.getElementById('editButton');
+          const deleteButton = document.getElementById('deleteButton');
+          const saveButton = document.getElementById('saveButton');
+          
+          editButton.disabled = selectedRows === 0;
+          deleteButton.disabled = selectedRows === 0;
+        }
+    
+        function toggleSelectAll() {
+          const selectAll = document.getElementById('selectAll');
+          const checkboxes = document.querySelectorAll('.row-selector');
+          checkboxes.forEach(checkbox => checkbox.checked = selectAll.checked);
+          updateButtonStates();
+        }
+    
+        function editSelected() {
+          const selectedRows = document.querySelectorAll('.row-selector:checked');
+          selectedRows.forEach(checkbox => {
+            const row = checkbox.closest('tr');
+            const cells = row.querySelectorAll('td');
+            cells.forEach((cell, index) => {
+              if (index > 0) { // Skip checkbox cell
+                const value = cell.innerText;
+                cell.innerHTML = `<input type="text" value="${value}">`;
+              }
+            });
+          });
+          
+          document.getElementById('editButton').style.display = 'none';
+          document.getElementById('deleteButton').style.display = 'none';
+          document.getElementById('saveButton').style.display = 'inline';
+        }
+    
+        function saveSelected() {
+          const selectedRows = document.querySelectorAll('.row-selector:checked');
+          const updates = [];
+    
+          selectedRows.forEach(checkbox => {
+            const row = checkbox.closest('tr');
+            const cells = row.querySelectorAll('td');
+            const data = {};
+            cells.forEach((cell, index) => {
+              if (index > 0) { // Skip checkbox cell
+                const input = cell.querySelector('input');
+                if (input) {
+                  data[`field${index-1}`] = input.value;
+                  cell.innerHTML = input.value;
+                }
+              }
+            });
+            
+            updates.push({
+              modelName: row.dataset.modelName,
+              objectId: row.dataset.objectId,
+              data: data
+            });
+          });
+    
+          Promise.all(updates.map(update => 
+            fetch(`/update_object/${update.modelName}/${update.objectId}/`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}',
+              },
+              body: JSON.stringify(update.data),
+            })
+          ))
+          .then(responses => {
+            if (responses.every(r => r.ok)) {
+              alert('Changes saved successfully.');
+            } else {
+              alert('Failed to save some changes.');
+            }
+          });
+    
+          document.getElementById('editButton').style.display = 'inline';
+          document.getElementById('deleteButton').style.display = 'inline';
+          document.getElementById('saveButton').style.display = 'none';
+        }
+    
+        function deleteSelected() {
+          const selectedRows = document.querySelectorAll('.row-selector:checked');
+          if (selectedRows.length === 0) return;
+          
+          if (confirm(`Are you sure you want to delete ${selectedRows.length} selected items?`)) {
+            const deletions = Array.from(selectedRows).map(checkbox => {
+              const row = checkbox.closest('tr');
+              return fetch(`/delete/${row.dataset.modelName}/${row.dataset.objectId}/`, {
+                method: 'POST',
+                headers: {
+                  'X-CSRFToken': '{{ csrf_token }}',
+                },
+              });
+            });
+    
+            Promise.all(deletions)
+              .then(() => window.location.reload())
+              .catch(() => alert('Failed to delete some items.'));
+          }
+        }
+    
+      </script>
+    
+</body>
+
