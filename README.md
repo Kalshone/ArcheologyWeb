@@ -4,7 +4,7 @@
 This Django-based web application serves as a digital platform for presenting and managing archaeological data from the Wadi Ziqlab Project 2024, led by Professor Edward Banning at the University of Toronto. The website provides access to archaeological findings, research data, and project information.
 
 ## Tech Stack
-- Python 3.x
+- Python 3
 - Django 5.1.3
 - SQLite Database
 - HTML/CSS
