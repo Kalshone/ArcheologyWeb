@@ -37,5 +37,7 @@ urlpatterns = [
     path('update_object/<str:model_name>/<int:object_id>/', views.update_object, name='update_object'), 
     
     path("accounts/", include("django.contrib.auth.urls")),
+    path('manage-permissions/', views.manage_editor_permissions, name='manage_permissions'),
+
     # path("accounts/", include("accounts.urls")),
 ]

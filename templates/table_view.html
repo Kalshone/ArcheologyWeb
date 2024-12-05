@@ -106,10 +106,29 @@
     
         <!-- Actions -->
         <div class="actions">
-            <button id="addButton" onclick="openAddForm()">Add</button>
-            <button id="editButton" onclick="editSelected()" disabled>Edit Selected</button>
-            <button id="deleteButton" onclick="deleteSelected()" disabled>Delete Selected</button>
-            <button id="saveButton" onclick="saveSelected()" style="display:none;">Save Changes</button>
+            {% if user.is_authenticated %}
+                {% if can_add %}
+                    <button id="addButton" onclick="openAddForm()">Add</button>
+                {% elif user.is_staff %}
+                    <button id="addButton" onclick="openAddForm()" disabled>Add</button>
+                {% endif %}
+                
+                {% if can_edit %}
+                    <button id="editButton" onclick="editSelected()" disabled>Edit Selected</button>
+                {% elif user.is_staff %}
+                    <button id="editButton" onclick="editSelected()" disabled>Edit Selected</button>
+                {% endif %}
+                
+                {% if can_delete %}
+                    <button id="deleteButton" onclick="deleteSelected()" disabled>Delete Selected</button>
+                {% elif user.is_staff %}
+                    <button id="deleteButton" onclick="deleteSelected()" disabled>Delete Selected</button>
+                {% endif %}
+                
+                {% if can_edit %}
+                    <button id="saveButton" onclick="saveSelected()" style="display:none;">Save Changes</button>
+                {% endif %}
+            {% endif %}
         </div>
     
         <!-- Add to Table Form -->

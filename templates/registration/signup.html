@@ -1,7 +1,10 @@
-<h2>Sign Up</h2>
+<h2>Editor Sign Up</h2>
+
 <form method="post">
   {% csrf_token %}
-  {{ form }}
-  <button type="submit">Sign Up</button>
+  {{ form.as_p }}
+  <button type="submit">Sign Up as Editor</button>
 </form>
+
 <p>Already have an account? <a href="{% url 'login' %}">Log In</a></p>
+<p>Or <a href="{% url 'dashboard' %}?guest=true">continue as guest</a></p>

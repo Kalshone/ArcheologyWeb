@@ -11,30 +11,97 @@ from urllib.parse import urlencode
 from django.contrib import messages
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_protect
+from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.models import User, Group
+from .models import EditorTablePermission
+from .forms import EditorTablePermissionForm
 import json
+
+def is_admin(user):
+    return user.is_superuser
+
+@user_passes_test(is_admin)
+def manage_editor_permissions(request):
+    editors = User.objects.filter(groups__name='Editor')
+    tables = ['Site', 'OtherTable']  # Add your table names here
+    
+    if request.method == 'POST':
+        editor_id = request.POST.get('editor')
+        table_name = request.POST.get('table')
+        editor = User.objects.get(id=editor_id)
+        
+        permission, created = EditorTablePermission.objects.get_or_create(
+            editor=editor,
+            table_name=table_name
+        )
+        
+        form = EditorTablePermissionForm(request.POST, instance=permission)
+        if form.is_valid():
+            form.save()
+            
+    permissions = EditorTablePermission.objects.all()
+    return render(request, 'manage_permissions.html', {
+        'editors': editors,
+        'tables': tables,
+        'permissions': permissions,
+        'form': EditorTablePermissionForm()
+    })
 
 def landing_page(request):
     # Render the landing page template
     return render(request, 'landing.html')
 
-def login(request):
-    # Redirect to the dashboard view
-    return redirect('dashboard')
+# def login(request):
+#     # Redirect to the dashboard view
+#     return redirect('dashboard')
+
+from .forms import EditorSignUpForm
+from .models import EditorRegistrationCode
 
 def signup(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = EditorSignUpForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, 'Account created successfully! Please log in.')
+            user = form.save()
+            # Add user to editor group
+            editor_group, created = Group.objects.get_or_create(name='Editor')
+            user.groups.add(editor_group)
+            # Mark registration code as used
+            code = form.cleaned_data.get('editor_code')
+            registration_code = EditorRegistrationCode.objects.get(code=code)
+            registration_code.is_used = True
+            registration_code.save()
+            messages.success(request, 'Editor account created successfully!')
             return redirect('login')
     else:
-        form = UserCreationForm()
+        form = EditorSignUpForm()
     return render(request, 'registration/signup.html', {'form': form})
 
+def login(request):
+    return render(request, 'registration/login.html')
+
+# def signup(request):
+#     if request.method == 'POST':
+#         form = UserCreationForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, 'Account created successfully! Please log in.')
+#             return redirect('login')
+#     else:
+#         form = UserCreationForm()
+#     return render(request, 'registration/signup.html', {'form': form})
+
 def dashboard(request):
+    """Guest access allowed - read-only"""
     sites = Site.objects.all()
-    return render(request, 'home.html', {'sites': sites})
+    can_edit = request.user.is_authenticated and (
+        request.user.is_superuser or 
+        request.user.groups.filter(name='Editor').exists()
+    )
+    return render(request, 'home.html', {
+        'sites': sites,
+        'can_edit': can_edit
+    })
 
 # def sites(request):
 #     if request.method == 'POST':
@@ -58,8 +125,40 @@ def dashboard(request):
 #         'model_name': 'Site'
 #     })
 
+
 def table_view(request, model_name):
     model = apps.get_model(app_label='myapp', model_name=model_name)
+    # objects = model.objects.all()
+    
+    try:
+        objects = model.objects.all()
+        print(f"Successfully retrieved {objects.count()} objects")
+        for obj in objects:
+            print(f"Object: {obj}")
+    except Exception as e:
+        print(f"Error retrieving objects: {e}")
+        objects = []
+    
+    can_add = False
+    can_edit = False
+    can_delete = False
+
+    if request.user.is_authenticated:
+        if request.user.is_superuser:
+            can_add = True
+            can_edit = True
+            can_delete = True
+        elif request.user.groups.filter(name='Editor').exists():
+            try:
+                perm = EditorTablePermission.objects.get(
+                    editor=request.user,
+                    table_name=model_name
+                )
+                can_add = perm.can_add
+                can_edit = perm.can_edit
+                can_delete = perm.can_delete
+            except EditorTablePermission.DoesNotExist:
+                pass
     
     if request.method == 'POST':
         object_data = {field: request.POST[field] for field in request.POST if field != 'csrfmiddlewaretoken'}
@@ -69,7 +168,7 @@ def table_view(request, model_name):
         except IntegrityError:
             return JsonResponse({'success': False, 'error': f"A {model_name} with this ID already exists."})
     
-    objects = model.objects.all()
+    
     headers = [{
         'name': field.name,
         'verbose_name': field.verbose_name,
@@ -80,7 +179,12 @@ def table_view(request, model_name):
     return render(request, 'table_view.html', {
         'objects': objects,
         'headers': headers,
-        'model_name': model_name
+        'model_name': model_name,
+        'can_add': can_add,
+        'can_edit': can_edit,
+        'can_delete': can_delete,
+        'is_editor': request.user.is_authenticated and request.user.groups.filter(name='Editor').exists(),
+        'is_admin': request.user.is_authenticated and request.user.is_superuser,
     })
     
 @csrf_exempt

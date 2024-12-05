@@ -1,0 +1,30 @@
+<h2>Manage Editor Permissions</h2>
+
+<table>
+    <tr>
+        <th>Editor</th>
+        <th>Table</th>
+        <th>Permissions</th>
+    </tr>
+    {% for editor in editors %}
+        {% for table in tables %}
+            <tr>
+                <td>{{ editor.username }}</td>
+                <td>{{ table }}</td>
+                <td>
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="editor" value="{{ editor.id }}">
+                        <input type="hidden" name="table" value="{{ table }}">
+                        
+                        {% with perm=permissions|filter_permission:editor,table %}
+                            {{ form.as_p }}
+                        {% endwith %}
+                        
+                        <button type="submit">Update</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    {% endfor %}
+</table>
