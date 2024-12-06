@@ -23,7 +23,7 @@ def is_admin(user):
 @user_passes_test(is_admin)
 def manage_editor_permissions(request):
     editors = User.objects.filter(groups__name='Editor')
-    tables = ['Site', 'OtherTable']  # Add your table names here
+    tables = ['Site']  # Add your table names here
     
     if request.method == 'POST':
         editor_id = request.POST.get('editor')
@@ -38,13 +38,15 @@ def manage_editor_permissions(request):
         form = EditorTablePermissionForm(request.POST, instance=permission)
         if form.is_valid():
             form.save()
-            
+    
     permissions = EditorTablePermission.objects.all()
+    form = EditorTablePermissionForm()
+    
     return render(request, 'manage_permissions.html', {
         'editors': editors,
         'tables': tables,
         'permissions': permissions,
-        'form': EditorTablePermissionForm()
+        'form': form
     })
 
 def landing_page(request):

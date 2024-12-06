@@ -8,10 +8,6 @@ class Site(models.Model):
     def __str__(self):
         return str(self.Site_num)
 
-class EditorCode(models.Model):
-    code = models.CharField(max_length=20, unique=True)
-    is_used = models.BooleanField(default=False)
-    
 class EditorRegistrationCode(models.Model):
     code = models.CharField(max_length=50, unique=True)
     is_used = models.BooleanField(default=False)

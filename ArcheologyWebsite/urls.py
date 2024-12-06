@@ -26,6 +26,7 @@ urlpatterns = [
     path("signup/", views.signup, name="signup"),
     # path('', include('myapp.urls')),
     
+    path('manage-permissions/', views.manage_editor_permissions, name='manage_permissions'),
     
     path('<str:model_name>/', views.table_view, name='table_view'),
     # path('sites/', views.sites, name='sites'),
@@ -37,7 +38,7 @@ urlpatterns = [
     path('update_object/<str:model_name>/<int:object_id>/', views.update_object, name='update_object'), 
     
     path("accounts/", include("django.contrib.auth.urls")),
-    path('manage-permissions/', views.manage_editor_permissions, name='manage_permissions'),
+    
 
     # path("accounts/", include("accounts.urls")),
 ]
