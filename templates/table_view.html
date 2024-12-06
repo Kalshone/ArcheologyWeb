@@ -171,7 +171,10 @@
         <table class="sites-table">
         <thead>
           <tr>
-            <th><input type="checkbox" id="selectAll" onclick="toggleSelectAll()"></th>
+            {% if user.is_authenticated %}
+                <th><input type="checkbox" id="selectAll" onclick="toggleSelectAll()"></th>
+            {% endif %}
+            
             {% for header in headers %}
             <th>{{ header.verbose_name }}</th>
             {% endfor %}
@@ -180,7 +183,10 @@
         <tbody>
             {% for object in objects %}
             <tr data-model-name="{{ model_name }}" data-object-id="{{ object|attr:headers.0.name }}">
+                {% if user.is_authenticated %}
                 <td><input type="checkbox" class="row-selector" onclick="updateButtonStates()"></td>
+                {% endif %}
+
                 {% for header in headers %}
                 <td>{{ object|attr:header.name }}</td>
                 {% endfor %}
