@@ -167,6 +167,7 @@
           </form>
         </div>
     
+
         <!-- Table -->
         <table class="sites-table">
         <thead>
@@ -174,9 +175,14 @@
             {% if user.is_authenticated %}
                 <th><input type="checkbox" id="selectAll" onclick="toggleSelectAll()"></th>
             {% endif %}
-            
+
             {% for header in headers %}
-            <th>{{ header.verbose_name }}</th>
+            <th>
+                <div class="header-content">
+                    <span>{{ header.verbose_name }}</span>
+                    <i class="fas fa-chevron-down column-toggle"></i>
+                </div>
+            </th>
             {% endfor %}
           </tr>
         </thead>

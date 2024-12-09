@@ -12,6 +12,7 @@ function closeAddForm() {
     formContainer.style.display = 'none';
 }
 
+
 document.addEventListener('DOMContentLoaded', function() {
     const dropdowns = document.querySelectorAll('.dropdown');
     
@@ -141,6 +142,35 @@ function deleteSelected() {
             });
     }
 }
+
+function toggleColumn(event) {
+    const headerCell = event.currentTarget.closest('th');
+    const table = headerCell.closest('table');
+    const columnIndex = Array.from(headerCell.parentElement.children).indexOf(headerCell);
+    const icon = headerCell.querySelector('.column-toggle');
+    
+    // Toggle icon
+    icon.classList.toggle('fa-chevron-down');
+    icon.classList.toggle('fa-chevron-right');
+    
+    // Toggle header
+    headerCell.classList.toggle('hidden-column');
+    
+    // Toggle data cells
+    const rows = table.querySelectorAll('tbody tr');
+    rows.forEach(row => {
+        if (row.cells[columnIndex]) {
+            row.cells[columnIndex].classList.toggle('hidden-column');
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const headers = document.querySelectorAll('.header-content');
+    headers.forEach(header => {
+        header.addEventListener('click', toggleColumn);
+    });
+});
 
 // Add event listeners when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
