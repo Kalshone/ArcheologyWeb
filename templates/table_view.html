@@ -170,36 +170,55 @@
 
         <!-- Table -->
         <table class="sites-table">
-        <thead>
-          <tr>
-            {% if user.is_authenticated %}
-                <th><input type="checkbox" id="selectAll" onclick="toggleSelectAll()"></th>
-            {% endif %}
-
-            {% for header in headers %}
-            <th>
-                <div class="header-content">
-                    <span>{{ header.verbose_name }}</span>
-                    <i class="fas fa-chevron-down column-toggle"></i>
-                </div>
-            </th>
-            {% endfor %}
-          </tr>
-        </thead>
-        <tbody>
-            {% for object in objects %}
-            <tr data-model-name="{{ model_name }}" data-object-id="{{ object|attr:headers.0.name }}">
+            <thead>
+            <tr>
                 {% if user.is_authenticated %}
-                <td><input type="checkbox" class="row-selector" onclick="updateButtonStates()"></td>
+                    <th><input type="checkbox" id="selectAll" onclick="toggleSelectAll()"></th>
                 {% endif %}
 
                 {% for header in headers %}
-                <td>{{ object|attr:header.name }}</td>
+                <th>
+                    <div class="header-content">
+                        <span>{{ header.verbose_name }}</span>
+                        <i class="fas fa-chevron-down column-toggle"></i>
+                    </div>
+                </th>
                 {% endfor %}
             </tr>
-            {% endfor %}
-        </tbody>
+            </thead>
+            <tbody>
+                {% for object in objects %}
+                <tr data-model-name="{{ model_name }}" data-object-id="{{ object|attr:headers.0.name }}">
+                    {% if user.is_authenticated %}
+                    <td><input type="checkbox" class="row-selector" onclick="updateButtonStates()"></td>
+                    {% endif %}
+
+                    {% for header in headers %}
+                    <td>{{ object|attr:header.name }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
         </table>
-      </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+                <a href="?page=1" class="pagination-link first"><i class="fas fa-chevron-left"></i></a>
+            {% endif %}
+        
+            {% for i in page_obj.paginator.page_range %}
+                {% if page_obj.number == i %}
+                    <span class="pagination-link active">{{ i }}</span>
+                {% elif i >= page_obj.number|add:"-2" and i <= page_obj.number|add:"2" %}
+                    <a href="?page={{ i }}" class="pagination-link">{{ i }}</a>
+                {% endif %}
+            {% endfor %}
+        
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.paginator.num_pages }}" class="pagination-link last"><i class="fas fa-chevron-right"></i></a>
+            {% endif %}
+        </div>
+    </div> 
 </body>
 

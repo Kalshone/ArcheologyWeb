@@ -447,7 +447,58 @@ Ensure transparent background on striped rows
 } 
 
 
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  gap: 5px;
+}
 
+.pagination-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 35px;
+  height: 35px;
+  padding: 0 10px;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #4f3c1f;
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(180, 180, 180, 0.1);
+}
+
+.pagination-link:hover {
+  background-color: #f5f0eb;
+  color: #4f3c1f;
+}
+
+.pagination-link.active {
+  background-color: #5a7d5a;
+  color: #fff;
+}
+
+.pagination-link.first,
+.pagination-link.last {
+  background-color: #fff;
+}
+
+.pagination-link.first:hover,
+.pagination-link.last:hover {
+    background-color: #f5f0eb;
+}
+
+.pagination .fas {
+    font-size: 12px;
+    background: none;
+    color: #4f3c1f;
+    box-shadow: none;
+    padding: 0;
+}
 
 /* #addSiteForm {
   /* margin-top: 20px; */

@@ -15,6 +15,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import User, Group
 from .models import EditorTablePermission
 from .forms import EditorTablePermissionForm
+from django.core.paginator import Paginator
 import json
 
 def is_admin(user):
@@ -130,16 +131,7 @@ def dashboard(request):
 
 def table_view(request, model_name):
     model = apps.get_model(app_label='myapp', model_name=model_name)
-    # objects = model.objects.all()
-    
-    try:
-        objects = model.objects.all()
-        print(f"Successfully retrieved {objects.count()} objects")
-        for obj in objects:
-            print(f"Object: {obj}")
-    except Exception as e:
-        print(f"Error retrieving objects: {e}")
-        objects = []
+    objects = model.objects.all()
     
     can_add = False
     can_edit = False
@@ -161,6 +153,10 @@ def table_view(request, model_name):
                 can_delete = perm.can_delete
             except EditorTablePermission.DoesNotExist:
                 pass
+            
+    paginator = Paginator(objects, 1)  # Show 10 items per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     
     if request.method == 'POST':
         object_data = {field: request.POST[field] for field in request.POST if field != 'csrfmiddlewaretoken'}
@@ -170,7 +166,6 @@ def table_view(request, model_name):
         except IntegrityError:
             return JsonResponse({'success': False, 'error': f"A {model_name} with this ID already exists."})
     
-    
     headers = [{
         'name': field.name,
         'verbose_name': field.verbose_name,
@@ -179,12 +174,13 @@ def table_view(request, model_name):
     } for field in model._meta.fields]
     
     return render(request, 'table_view.html', {
-        'objects': objects,
+        'objects':  page_obj,
         'headers': headers,
         'model_name': model_name,
         'can_add': can_add,
         'can_edit': can_edit,
         'can_delete': can_delete,
+        'page_obj': page_obj,
         'is_editor': request.user.is_authenticated and request.user.groups.filter(name='Editor').exists(),
         'is_admin': request.user.is_authenticated and request.user.is_superuser,
     })
