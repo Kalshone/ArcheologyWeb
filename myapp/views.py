@@ -154,7 +154,7 @@ def table_view(request, model_name):
             except EditorTablePermission.DoesNotExist:
                 pass
             
-    paginator = Paginator(objects, 1)  # Show 10 items per page
+    paginator = Paginator(objects, 10)  # Show 10 items per page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     

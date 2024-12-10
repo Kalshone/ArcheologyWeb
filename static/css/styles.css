@@ -310,23 +310,25 @@ hr {
 
 /* TABLE */
 .sites-table {
-  width: 100%;
+  /* width: 100%; */
   border-collapse: collapse;
   background-color: #ffffff;
   border-radius: 8px;
-  overflow: hidden;
+  overflow-x: auto;
   font-size: 14px;
   margin-top: 10px;
-  /* margin: 10px 0 10px 0; */
   box-shadow: 0 2px 6px rgba(180, 180, 180, 0.1);
-  table-layout: fixed; 
 }
 
 .sites-table th,
 .sites-table td {
-  padding: 12px 15px;
+  padding: 10px 15px;
   text-align: left;
-  width: calc(100% / [number_of_columns]); 
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: all 0.3s ease;
+  /* width: auto; */
 }
 
 .sites-table tbody tr {
@@ -341,35 +343,57 @@ hr {
   background-color: #f5f0eb;
 }
 
-
 .header-content {
   display: flex;
-  /* align-items: center; */
+  align-items: center;
   gap: 8px;
   cursor: pointer;
 }
 
+@media screen and (max-width: 1200px) {
+  .sites-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  
+  .sites-table th,
+  .sites-table td {
+    min-width: 100px;
+  }
+}
+
+
+
 .column-toggle {
   font-size: 12px;
   color: #997a63;
+  /* width: 12px;  */
+  /* display: inline-block; */
 }
 
-.hidden-column {
-  width: 30px;
-  padding: 8px !important;
+.hidden-column .header-content {
+  /* width: 12px; */
+  justify-content: center;
+  /* margin-right: 0px; */
+  /* width: 10px; */
+  padding: 0px 5px; 
   background: transparent !important;
+  /* padding: 0px; */
 }
+
 
 th.hidden-column .header-content span {
   display: none;
+  width: 20px;
 }
 
 td.hidden-column {
   opacity: 0;
   background: transparent !important;
+  max-width: 15px;
 }
 
-Ensure transparent background on striped rows
 .sites-table tbody tr:nth-child(odd) td.hidden-column {
   background: transparent !important;
 }
@@ -377,8 +401,6 @@ Ensure transparent background on striped rows
 .sites-table tbody tr:hover td.hidden-column {
   background: transparent !important;
 }
-
-
 
 
 /* Action buttons */
