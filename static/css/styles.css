@@ -331,10 +331,6 @@ hr {
   /* width: auto; */
 }
 
-.sites-table tbody tr {
-  border-bottom: 1px solid #f5f0eb;
-}
-
 .sites-table tbody tr:nth-child(odd) {
   background-color: #fbf9f6;
 }
@@ -400,6 +396,18 @@ td.hidden-column {
 
 .sites-table tbody tr:hover td.hidden-column {
   background: transparent !important;
+}
+
+.sites-table tbody tr:not(:last-child) {
+  border: 1px solid #f5f0eb;
+}
+
+.sites-table tr.selected {
+  border: 1px solid #5a7d5a !important;
+}
+
+.sites-table input[type="checkbox"]:checked {
+  accent-color: #5a7d5a;
 }
 
 

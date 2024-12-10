@@ -46,6 +46,15 @@ function updateButtonStates() {
     
     editButton.disabled = selectedRows === 0;
     deleteButton.disabled = selectedRows === 0;
+
+    document.querySelectorAll('.row-selector').forEach(checkbox => {
+        const row = checkbox.closest('tr');
+        if (checkbox.checked) {
+            row.classList.add('selected');
+        } else {
+            row.classList.remove('selected');
+        }
+    });
 }
 
 function toggleSelectAll() {
