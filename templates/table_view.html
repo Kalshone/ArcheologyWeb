@@ -137,7 +137,6 @@
             {% csrf_token %}
             <div class="form-content">
                 {% for header in headers %}
-                {% comment %} {% if not header.is_primary_key %} {% endcomment %}
                     <div class="form-group">
                     <label for="{{ header.name }}">{{ header.verbose_name }}</label>
                     {% if header.type == 'boolean' %}
@@ -157,7 +156,6 @@
                       <input type="text" id="{{ header.name }}" name="{{ header.name }}" class="form-input" required>
                     {% endif %}
                   </div>
-                {% comment %} {% endif %} {% endcomment %}
               {% endfor %}
             </div>
             <div class="form-buttons">

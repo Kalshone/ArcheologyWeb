@@ -83,17 +83,6 @@ def signup(request):
 def login(request):
     return render(request, 'registration/login.html')
 
-# def signup(request):
-#     if request.method == 'POST':
-#         form = UserCreationForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request, 'Account created successfully! Please log in.')
-#             return redirect('login')
-#     else:
-#         form = UserCreationForm()
-#     return render(request, 'registration/signup.html', {'form': form})
-
 def dashboard(request):
     """Guest access allowed - read-only"""
     sites = Site.objects.all()

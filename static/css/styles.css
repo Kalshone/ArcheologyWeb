@@ -19,14 +19,12 @@
 body {
   display: flex;
   min-height: 100vh;
-  /* background-color: # F8F9FA; */
   background-color: #fbf9f6; 
 }
 
 h1 {
   font-size: 1.1em;
   font-weight: 700;
-  /* padding-top: 5px; */
 }
 
 h2 {
@@ -114,14 +112,12 @@ p {
   margin: 20px;
   font-weight: 700;
   text-align: center;
-  /* color: # 4f3c1f; */
 }
 
 hr {
   border: 0;
   height: 1px;
   background: #333;
-  /* color: # 4f3c1f; */
   margin-top: 20px;
   margin-bottom: 20px;
   background-image: linear-gradient(to right, #fbf9f6, #997a63, #fbf9f6);
@@ -157,7 +153,6 @@ hr {
 
 .sidebar a:hover {
   color: #4f3c1f;
-  /* background-color: #e2e2e2;  */
   background-color: #f5f0eb; 
 }
 
@@ -226,7 +221,6 @@ hr {
 .main-content .stats-container {
   display: flex;
   justify-content: space-between;
-  /* margin-bottom: 30px; */
 }
 
 .main-content .stats-container .stats {
@@ -288,7 +282,6 @@ hr {
 .info-card .stat-values {
   display: flex;
   flex-direction: column;
-  /* justify-content:space-around; */
 }
 
 .info-card .fas {
@@ -310,7 +303,6 @@ hr {
 
 /* TABLE */
 .sites-table {
-  /* width: 100%; */
   border-collapse: collapse;
   background-color: #ffffff;
   border-radius: 8px;
@@ -328,7 +320,6 @@ hr {
   overflow: hidden;
   text-overflow: ellipsis;
   transition: all 0.3s ease;
-  /* width: auto; */
 }
 
 .sites-table tbody tr:nth-child(odd) {
@@ -359,23 +350,15 @@ hr {
   }
 }
 
-
-
 .column-toggle {
   font-size: 12px;
   color: #997a63;
-  /* width: 12px;  */
-  /* display: inline-block; */
 }
 
 .hidden-column .header-content {
-  /* width: 12px; */
   justify-content: center;
-  /* margin-right: 0px; */
-  /* width: 10px; */
   padding: 0px 5px; 
   background: transparent !important;
-  /* padding: 0px; */
 }
 
 
@@ -529,51 +512,3 @@ td.hidden-column {
     box-shadow: none;
     padding: 0;
 }
-
-/* #addSiteForm {
-  /* margin-top: 20px; */
-  /* margin-bottom: 20px; */
-  /* display: block; */
-  /* font-size: 14px; */
-  /* margin-left: 15px; */
-
-
-/* .main-content .close {
-  margin-right: 15px;
-  cursor: pointer;
-} */
-
-
-
-
-
-/* Status indicator styles
-.sites-table .fulfilled {
-  color: white;
-  background-color: #28a745;
-  padding: 5px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-
-.sites-table .confirmed {
-  color: white;
-  background-color: #007bff;
-  padding: 5px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-
-.sites-table .partially-shipped {
-  color: white;
-  background-color: #ffc107;
-  padding: 5px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: bold;
-  text-transform: uppercase;
-} */
