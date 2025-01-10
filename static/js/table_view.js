@@ -36,6 +36,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       });
     });
+
+    checkTableOverflow();
   });
 
 function updateButtonStates() {
@@ -174,10 +176,45 @@ function toggleColumn(event) {
     });
 }
 
+function checkTableOverflow() {
+    const table = document.querySelector('.sites-table');
+    const container = table.parentElement;
+
+    if (table.scrollWidth > container.clientWidth) {
+        // Hide columns until the table fits within the container
+        const headers = table.querySelectorAll('th:not(.hidden-column)');
+        for (let i = headers.length - 1; i >= 0; i--) {
+            const header = headers[i];
+            toggleColumn({ currentTarget: header.querySelector('.header-content') });
+            if (table.scrollWidth <= container.clientWidth) {
+                break;
+            }
+        }
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const headers = document.querySelectorAll('.header-content');
     headers.forEach(header => {
         header.addEventListener('click', toggleColumn);
+    });
+
+    checkTableOverflow();
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const button = document.getElementById('toggleButton');
+    const dropdown = document.getElementById('columnList');
+    
+    button.addEventListener('click', () => {
+        dropdown.classList.toggle('active');
+    });
+
+    dropdown.addEventListener('change', (e) => {
+        if (e.target.matches('input[type="checkbox"]')) {
+            let table = $('#example').DataTable();
+            table.column(e.target.dataset.column).visible(e.target.checked);
+        }
     });
 });
 

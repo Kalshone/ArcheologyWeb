@@ -105,7 +105,8 @@
         <h2>{{ model_name }}</h2>
     
         <!-- Actions -->
-        <div class="actions">
+        <div class="actions-container">
+            <div class="action-buttons">
             {% if user.is_authenticated %}
                 {% if can_add %}
                     <button id="addButton" onclick="openAddForm()">Add</button>
@@ -129,6 +130,18 @@
                     <button id="saveButton" onclick="saveSelected()" style="display:none;">Save Changes</button>
                 {% endif %}
             {% endif %}
+            </div>
+            <div class="column-toggle-dropdown">
+                <button id="toggleButton">Show/Hide Columns</button>
+                <div id="columnList" class="dropdown-content">
+                    {% for header in headers %}
+                        <label>
+                            <input type="checkbox" checked data-column="{{ forloop.counter0 }}">
+                            {{ header.verbose_name }}
+                        </label>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
     
         <!-- Add to Table Form -->
@@ -165,39 +178,115 @@
           </form>
         </div>
     
-
         <!-- Table -->
-        <table class="sites-table">
+        <!-- <div>
+            Toggle column: <a class="toggle-vis" data-column="0">Name</a> - <a class="toggle-vis" data-column="1">Position</a> - <a class="toggle-vis" data-column="2">Office</a> - <a class="toggle-vis" data-column="3">Age</a> - <a class="toggle-vis" data-column="4">Start date</a> - <a class="toggle-vis" data-column="5">Salary</a>
+        </div> -->
+        <!-- <div class="toggle-columns">
+            Toggle columns: 
+            {% for header in headers %}
+                <a class="toggle-vis" data-column="{{ forloop.counter0 }}">{{ header.verbose_name }}</a>
+                {% if not forloop.last %} - {% endif %}
+            {% endfor %}
+        </div> -->
+        
+        
+        <table id="example" class="display" style="width:100%">
             <thead>
-            <tr>
-                {% if user.is_authenticated %}
-                    <th><input type="checkbox" id="selectAll" onclick="toggleSelectAll()"></th>
-                {% endif %}
-
-                {% for header in headers %}
-                <th>
-                    <div class="header-content">
-                        <span>{{ header.verbose_name }}</span>
-                        <i class="fas fa-chevron-down column-toggle"></i>
-                    </div>
-                </th>
-                {% endfor %}
-            </tr>
-            </thead>
-            <tbody>
-                {% for object in objects %}
-                <tr data-model-name="{{ model_name }}" data-object-id="{{ object|attr:headers.0.name }}">
+                <!-- <tr>
+                    <th>Name</th>
+                    <th>Position</th>
+                    <th>Office</th>
+                    <th>Age</th>
+                    <th>Start date</th>
+                    <th>Salary</th>
+                </tr> -->
+                <tr>
                     {% if user.is_authenticated %}
-                    <td><input type="checkbox" class="row-selector" onclick="updateButtonStates()"></td>
+                        <th><input type="checkbox" id="selectAll" onclick="toggleSelectAll()"></th>
                     {% endif %}
 
                     {% for header in headers %}
-                    <td>{{ object|attr:header.name }}</td>
+                    <th data-view-count="0">
+                        <div class="header-content">
+                            <span>{{ header.verbose_name }}</span>
+                            <!-- <i class="fas fa-chevron-down column-toggle"></i> -->
+                        </div>
+                    </th>
                     {% endfor %}
                 </tr>
+            </thead>
+            <tbody>
+                <!-- <tr>
+                    <td>Tiger Nixon</td>
+                    <td>System Architect</td>
+                    <td>Edinburgh</td>
+                    <td>61</td>
+                    <td>2011-04-25</td>
+                    <td>$320,800</td>
+                </tr> -->
+                {% for object in objects %}
+                    <tr data-model-name="{{ model_name }}" data-object-id="{{ object|attr:headers.0.name }}">
+                        {% if user.is_authenticated %}
+                        <td><input type="checkbox" class="row-selector" onclick="updateButtonStates()"></td>
+                        {% endif %}
+
+                        {% for header in headers %}
+                        <td>{{ object|attr:header.name }}</td>
+                        {% endfor %}
+                    </tr>
                 {% endfor %}
             </tbody>
+            <tfoot>
+                <tr>
+                    {% if user.is_authenticated %}
+                        <th><input type="checkbox" id="selectAll" onclick="toggleSelectAll()"></th>
+                    {% endif %}
+
+                    {% for header in headers %}
+                    <th data-view-count="0">
+                        <div class="header-content">
+                            <span>{{ header.verbose_name }}</span>
+                        </div>
+                    </th>
+                    {% endfor %}
+                </tr>
+            </tfoot>
         </table>
+
+        <!-- <div class="table-container">
+            <table class="table">
+                <thead>
+                <tr>
+                    {% if user.is_authenticated %}
+                        <th><input type="checkbox" id="selectAll" onclick="toggleSelectAll()"></th>
+                    {% endif %}
+
+                    {% for header in headers %}
+                    <th data-view-count="0">
+                        <div class="header-content">
+                            <span>{{ header.verbose_name }}</span>
+                            <i class="fas fa-chevron-down column-toggle"></i>
+                        </div>
+                    </th>
+                    {% endfor %}
+                </tr>
+                </thead>
+                <tbody>
+                    {% for object in objects %}
+                    <tr data-model-name="{{ model_name }}" data-object-id="{{ object|attr:headers.0.name }}">
+                        {% if user.is_authenticated %}
+                        <td><input type="checkbox" class="row-selector" onclick="updateButtonStates()"></td>
+                        {% endif %}
+
+                        {% for header in headers %}
+                        <td>{{ object|attr:header.name }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div> -->
 
         <!-- Pagination -->
         <div class="pagination">
@@ -217,6 +306,9 @@
                 <a href="?page={{ page_obj.paginator.num_pages }}" class="pagination-link last"><i class="fas fa-chevron-right"></i></a>
             {% endif %}
         </div>
+
+
+        
     </div> 
 </body>
 
