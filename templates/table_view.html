@@ -178,19 +178,16 @@
           </form>
         </div>
     
-        <!-- Table -->
-        <!-- <div>
-            Toggle column: <a class="toggle-vis" data-column="0">Name</a> - <a class="toggle-vis" data-column="1">Position</a> - <a class="toggle-vis" data-column="2">Office</a> - <a class="toggle-vis" data-column="3">Age</a> - <a class="toggle-vis" data-column="4">Start date</a> - <a class="toggle-vis" data-column="5">Salary</a>
-        </div> -->
-        <!-- <div class="toggle-columns">
+        <!-- Column Toggles -->
+         <div class="toggle-columns">
             Toggle columns: 
             {% for header in headers %}
                 <a class="toggle-vis" data-column="{{ forloop.counter0 }}">{{ header.verbose_name }}</a>
                 {% if not forloop.last %} - {% endif %}
             {% endfor %}
-        </div> -->
+        </div> 
         
-        
+        <!-- Table -->
         <table id="example" class="display" style="width:100%">
             <thead>
                 <!-- <tr>
@@ -254,7 +251,7 @@
             </tfoot>
         </table>
 
-        <!-- <div class="table-container">
+        {% comment %} <div class="table-container">
             <table class="table">
                 <thead>
                 <tr>
@@ -286,7 +283,7 @@
                     {% endfor %}
                 </tbody>
             </table>
-        </div> -->
+        </div> {% endcomment %}
 
         <!-- Pagination -->
         <div class="pagination">
