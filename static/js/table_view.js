@@ -13,32 +13,32 @@ function closeAddForm() {
 }
 
 
-document.addEventListener('DOMContentLoaded', function() {
-    const dropdowns = document.querySelectorAll('.dropdown');
+// document.addEventListener('DOMContentLoaded', function() {
+//     const dropdowns = document.querySelectorAll('.dropdown');
     
-    dropdowns.forEach(dropdown => {
-      const trigger = dropdown.querySelector('.dropdown-trigger');
+//     dropdowns.forEach(dropdown => {
+//       const trigger = dropdown.querySelector('.dropdown-trigger');
       
-      trigger.addEventListener('click', function(e) {
-        e.preventDefault();
+//       trigger.addEventListener('click', function(e) {
+//         e.preventDefault();
         
-        // Toggle active class on dropdown
-        dropdown.classList.toggle('active');
+//         // Toggle active class on dropdown
+//         dropdown.classList.toggle('active');
         
-        // Find and toggle chevron icon
-        const chevron = this.querySelector('.fa-chevron-right, .fa-chevron-down');
-        if (chevron.classList.contains('fa-chevron-right')) {
-          chevron.classList.remove('fa-chevron-right');
-          chevron.classList.add('fa-chevron-down');
-        } else {
-          chevron.classList.remove('fa-chevron-down');
-          chevron.classList.add('fa-chevron-right');
-        }
-      });
-    });
+//         // Find and toggle chevron icon
+//         const chevron = this.querySelector('.fa-chevron-right, .fa-chevron-down');
+//         if (chevron.classList.contains('fa-chevron-right')) {
+//           chevron.classList.remove('fa-chevron-right');
+//           chevron.classList.add('fa-chevron-down');
+//         } else {
+//           chevron.classList.remove('fa-chevron-down');
+//           chevron.classList.add('fa-chevron-right');
+//         }
+//       });
+//     });
 
-    checkTableOverflow();
-  });
+//     checkTableOverflow();
+//   });
 
 function updateButtonStates() {
     const selectedRows = document.querySelectorAll('.row-selector:checked').length;
@@ -154,69 +154,53 @@ function deleteSelected() {
     }
 }
 
-function toggleColumn(event) {
-    const headerCell = event.currentTarget.closest('th');
-    const table = headerCell.closest('table');
-    const columnIndex = Array.from(headerCell.parentElement.children).indexOf(headerCell);
-    const icon = headerCell.querySelector('.column-toggle');
+// function toggleColumn(event) {
+//     const headerCell = event.currentTarget.closest('th');
+//     const table = headerCell.closest('table');
+//     const columnIndex = Array.from(headerCell.parentElement.children).indexOf(headerCell);
+//     const icon = headerCell.querySelector('.column-toggle');
     
-    // Toggle icon
-    icon.classList.toggle('fa-chevron-down');
-    icon.classList.toggle('fa-chevron-right');
+//     // Toggle icon
+//     icon.classList.toggle('fa-chevron-down');
+//     icon.classList.toggle('fa-chevron-right');
     
-    // Toggle header
-    headerCell.classList.toggle('hidden-column');
+//     // Toggle header
+//     headerCell.classList.toggle('hidden-column');
     
-    // Toggle data cells
-    const rows = table.querySelectorAll('tbody tr');
-    rows.forEach(row => {
-        if (row.cells[columnIndex]) {
-            row.cells[columnIndex].classList.toggle('hidden-column');
-        }
-    });
-}
+//     // Toggle data cells
+//     const rows = table.querySelectorAll('tbody tr');
+//     rows.forEach(row => {
+//         if (row.cells[columnIndex]) {
+//             row.cells[columnIndex].classList.toggle('hidden-column');
+//         }
+//     });
+// }
 
-function checkTableOverflow() {
-    const table = document.querySelector('.sites-table');
-    const container = table.parentElement;
+// function checkTableOverflow() {
+//     const table = document.querySelector('.sites-table');
+//     const container = table.parentElement;
 
-    if (table.scrollWidth > container.clientWidth) {
-        // Hide columns until the table fits within the container
-        const headers = table.querySelectorAll('th:not(.hidden-column)');
-        for (let i = headers.length - 1; i >= 0; i--) {
-            const header = headers[i];
-            toggleColumn({ currentTarget: header.querySelector('.header-content') });
-            if (table.scrollWidth <= container.clientWidth) {
-                break;
-            }
-        }
-    }
-}
+//     if (table.scrollWidth > container.clientWidth) {
+//         // Hide columns until the table fits within the container
+//         const headers = table.querySelectorAll('th:not(.hidden-column)');
+//         for (let i = headers.length - 1; i >= 0; i--) {
+//             const header = headers[i];
+//             toggleColumn({ currentTarget: header.querySelector('.header-content') });
+//             if (table.scrollWidth <= container.clientWidth) {
+//                 break;
+//             }
+//         }
+//     }
+// }
 
-document.addEventListener('DOMContentLoaded', function() {
-    const headers = document.querySelectorAll('.header-content');
-    headers.forEach(header => {
-        header.addEventListener('click', toggleColumn);
-    });
+// document.addEventListener('DOMContentLoaded', function() {
+//     const headers = document.querySelectorAll('.header-content');
+//     headers.forEach(header => {
+//         header.addEventListener('click', toggleColumn);
+//     });
 
-    checkTableOverflow();
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-    const button = document.getElementById('toggleButton');
-    const dropdown = document.getElementById('columnList');
-    
-    button.addEventListener('click', () => {
-        dropdown.classList.toggle('active');
-    });
-
-    dropdown.addEventListener('change', (e) => {
-        if (e.target.matches('input[type="checkbox"]')) {
-            let table = $('#example').DataTable();
-            table.column(e.target.dataset.column).visible(e.target.checked);
-        }
-    });
-});
+//     checkTableOverflow();
+// });
 
 // Add event listeners when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
@@ -246,3 +230,48 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const button = document.getElementById('toggleButton');
+    const dropdown = document.getElementById('columnList');
+    const isAuthenticated = document.body.dataset.authenticated === 'true';
+    
+    button.addEventListener('click', () => {
+        dropdown.classList.toggle('active');
+    });
+
+    // Load saved column visibility state
+    const savedState = JSON.parse(localStorage.getItem('columnVisibility')) || {};
+    const checkboxes = dropdown.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(checkbox => {
+        const column = parseInt(checkbox.dataset.column, 10) + (isAuthenticated ? 1 : 0); // Adjust for checkbox column if authenticated
+        const isVisible = savedState[column] !== false; // Default to true if not saved
+        checkbox.checked = isVisible;
+        toggleColumnVisibility(column, isVisible);
+    });
+
+    dropdown.addEventListener('change', (e) => {
+        if (e.target.matches('input[type="checkbox"]')) {
+            const column = parseInt(e.target.dataset.column, 10) + (isAuthenticated ? 1 : 0); // Adjust for checkbox column if authenticated
+            const isVisible = e.target.checked;
+            toggleColumnVisibility(column, isVisible);
+
+            // Save state to local storage
+            savedState[column] = isVisible;
+            localStorage.setItem('columnVisibility', JSON.stringify(savedState));
+        }
+    });
+});
+
+function toggleColumnVisibility(columnIndex, isVisible) {
+    const table = document.getElementById('example');
+    const rows = table.querySelectorAll('tr');
+
+    rows.forEach(row => {
+        const cells = row.querySelectorAll('th, td');
+        if (cells[columnIndex]) {
+            cells[columnIndex].style.display = isVisible ? '' : 'none';
+        }
+    });
+}
