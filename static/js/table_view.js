@@ -12,34 +12,6 @@ function closeAddForm() {
     formContainer.style.display = 'none';
 }
 
-
-// document.addEventListener('DOMContentLoaded', function() {
-//     const dropdowns = document.querySelectorAll('.dropdown');
-    
-//     dropdowns.forEach(dropdown => {
-//       const trigger = dropdown.querySelector('.dropdown-trigger');
-      
-//       trigger.addEventListener('click', function(e) {
-//         e.preventDefault();
-        
-//         // Toggle active class on dropdown
-//         dropdown.classList.toggle('active');
-        
-//         // Find and toggle chevron icon
-//         const chevron = this.querySelector('.fa-chevron-right, .fa-chevron-down');
-//         if (chevron.classList.contains('fa-chevron-right')) {
-//           chevron.classList.remove('fa-chevron-right');
-//           chevron.classList.add('fa-chevron-down');
-//         } else {
-//           chevron.classList.remove('fa-chevron-down');
-//           chevron.classList.add('fa-chevron-right');
-//         }
-//       });
-//     });
-
-//     checkTableOverflow();
-//   });
-
 function updateButtonStates() {
     const selectedRows = document.querySelectorAll('.row-selector:checked').length;
     const editButton = document.getElementById('editButton');
@@ -71,7 +43,6 @@ function editSelected() {
     selectedRows.forEach(checkbox => {
         const row = checkbox.closest('tr');
         const cells = row.querySelectorAll('td');
-        // Convert cells to input fields
         cells.forEach(cell => {
             if (!cell.querySelector('input')) {
                 const value = cell.textContent;
@@ -154,55 +125,6 @@ function deleteSelected() {
     }
 }
 
-// function toggleColumn(event) {
-//     const headerCell = event.currentTarget.closest('th');
-//     const table = headerCell.closest('table');
-//     const columnIndex = Array.from(headerCell.parentElement.children).indexOf(headerCell);
-//     const icon = headerCell.querySelector('.column-toggle');
-    
-//     // Toggle icon
-//     icon.classList.toggle('fa-chevron-down');
-//     icon.classList.toggle('fa-chevron-right');
-    
-//     // Toggle header
-//     headerCell.classList.toggle('hidden-column');
-    
-//     // Toggle data cells
-//     const rows = table.querySelectorAll('tbody tr');
-//     rows.forEach(row => {
-//         if (row.cells[columnIndex]) {
-//             row.cells[columnIndex].classList.toggle('hidden-column');
-//         }
-//     });
-// }
-
-// function checkTableOverflow() {
-//     const table = document.querySelector('.sites-table');
-//     const container = table.parentElement;
-
-//     if (table.scrollWidth > container.clientWidth) {
-//         // Hide columns until the table fits within the container
-//         const headers = table.querySelectorAll('th:not(.hidden-column)');
-//         for (let i = headers.length - 1; i >= 0; i--) {
-//             const header = headers[i];
-//             toggleColumn({ currentTarget: header.querySelector('.header-content') });
-//             if (table.scrollWidth <= container.clientWidth) {
-//                 break;
-//             }
-//         }
-//     }
-// }
-
-// document.addEventListener('DOMContentLoaded', function() {
-//     const headers = document.querySelectorAll('.header-content');
-//     headers.forEach(header => {
-//         header.addEventListener('click', toggleColumn);
-//     });
-
-//     checkTableOverflow();
-// });
-
-// Add event listeners when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('addForm').addEventListener('submit', function(e) {
         e.preventDefault();

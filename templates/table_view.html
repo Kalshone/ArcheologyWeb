@@ -202,14 +202,6 @@
         <div class="table-container">
         <table id="example" class="display" style="width:100%">
             <thead>
-                <!-- <tr>
-                    <th>Name</th>
-                    <th>Position</th>
-                    <th>Office</th>
-                    <th>Age</th>
-                    <th>Start date</th>
-                    <th>Salary</th>
-                </tr> -->
                 <tr>
                     {% if user.is_authenticated %}
                         <th><input type="checkbox" id="selectAll" onclick="toggleSelectAll()"></th>
@@ -219,7 +211,6 @@
                     <th data-view-count="0">
                         <div class="header-content">
                             <span>{{ header.verbose_name }}</span>
-                            <!-- <i class="fas fa-chevron-down column-toggle"></i> -->
                         </div>
                     </th>
                     {% endfor %}

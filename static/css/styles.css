@@ -350,19 +350,6 @@ hr {
   cursor: pointer;
 }
 
-/* @media screen and (max-width: 1200px) {
-  .table {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-  
-  .table th,
-  .table td {
-    min-width: 100px;
-  }
-} */
-
 .column-toggle {
   font-size: 12px;
   color: #997a63;
@@ -434,20 +421,18 @@ td.hidden-column {
 .action-buttons {
   display: flex;
   align-items: center;
-  gap: 10px;  /* Space between left-aligned items */
+  gap: 10px; 
 }
 
 .column-toggle-dropdown {
-  margin-left: auto;  /* Pushes content to the right */
+  margin-left: auto;  
 }
 
 .dropdown-content {
   display: none;
   position: absolute;
   background: white;
-  /* border: 1px solid #ddd; */
   padding: 10px;
-  /* z-index: 1000; */
 }
 
 .dropdown-content.active {
