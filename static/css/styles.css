@@ -6,6 +6,9 @@
   color: #4f3c1f;
 }
 
+html {
+  min-width: 780px;
+}
 
 /* STANDARD */
 * {
@@ -424,6 +427,7 @@ td.hidden-column {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
   width: 100%;
 }
 
