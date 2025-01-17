@@ -31,10 +31,26 @@ function updateButtonStates() {
     });
 }
 
-function toggleSelectAll() {
-    const selectAll = document.getElementById('selectAll');
-    const checkboxes = document.querySelectorAll('.row-selector');
-    checkboxes.forEach(checkbox => checkbox.checked = selectAll.checked);
+function toggleSelectAll(source) {
+    const headerCheckbox = document.querySelector('thead #selectAll');
+    const footerCheckbox = document.querySelector('tfoot #selectAll');
+    const rowCheckboxes = document.querySelectorAll('.row-selector');
+    
+    const isChecked = source.checked;
+    
+    headerCheckbox.checked = isChecked;
+    footerCheckbox.checked = isChecked;
+    
+    rowCheckboxes.forEach(checkbox => {
+        checkbox.checked = isChecked;
+        const row = checkbox.closest('tr');
+        if (isChecked) {
+            row.classList.add('selected');
+        } else {
+            row.classList.remove('selected');
+        }
+    });
+    
     updateButtonStates();
 }
 

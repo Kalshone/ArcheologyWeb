@@ -200,11 +200,11 @@
          {% endcomment %}
         <!-- Table -->
         <div class="table-container">
-        <table id="example" class="display" style="width:100%">
+        <table id="example" class="table" style="width:100%">
             <thead>
                 <tr>
                     {% if user.is_authenticated %}
-                        <th><input type="checkbox" id="selectAll" onclick="toggleSelectAll()"></th>
+                        <th><input type="checkbox" id="selectAll" onclick="toggleSelectAll(this)"></th>
                     {% endif %}
 
                     {% for header in headers %}
@@ -232,7 +232,7 @@
             <tfoot>
                 <tr>
                     {% if user.is_authenticated %}
-                        <th><input type="checkbox" id="selectAll" onclick="toggleSelectAll()"></th>
+                        <th><input type="checkbox" id="selectAll" onclick="toggleSelectAll(this)"></th>
                     {% endif %}
 
                     {% for header in headers %}
@@ -247,7 +247,7 @@
         </table>
         </div>
 
-        {% comment %} <div class="table-container">
+        <!-- {% comment %} <div class="table-container">
             <table class="table">
                 <thead>
                 <tr>
@@ -279,7 +279,7 @@
                     {% endfor %}
                 </tbody>
             </table>
-        </div> {% endcomment %}
+        </div> {% endcomment %} -->
 
         <!-- Pagination -->
         <div class="pagination">

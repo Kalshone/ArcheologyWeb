@@ -379,7 +379,7 @@ td.hidden-column {
   background: transparent !important;
 }
 
-.table tbody tr:not(:last-child) {
+.table tbody tr {
   border: 1px solid #f5f0eb;
 }
 
