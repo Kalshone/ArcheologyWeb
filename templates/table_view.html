@@ -208,7 +208,7 @@
                     {% endif %}
 
                     {% for header in headers %}
-                    <th data-view-count="0">
+                    <th>
                         <div class="header-content">
                             <span>{{ header.verbose_name }}</span>
                         </div>
@@ -236,7 +236,7 @@
                     {% endif %}
 
                     {% for header in headers %}
-                    <th data-view-count="0">
+                    <th>
                         <div class="header-content">
                             <span>{{ header.verbose_name }}</span>
                         </div>
@@ -246,40 +246,6 @@
             </tfoot>
         </table>
         </div>
-
-        <!-- {% comment %} <div class="table-container">
-            <table class="table">
-                <thead>
-                <tr>
-                    {% if user.is_authenticated %}
-                        <th><input type="checkbox" id="selectAll" onclick="toggleSelectAll()"></th>
-                    {% endif %}
-
-                    {% for header in headers %}
-                    <th data-view-count="0">
-                        <div class="header-content">
-                            <span>{{ header.verbose_name }}</span>
-                            <i class="fas fa-chevron-down column-toggle"></i>
-                        </div>
-                    </th>
-                    {% endfor %}
-                </tr>
-                </thead>
-                <tbody>
-                    {% for object in objects %}
-                    <tr data-model-name="{{ model_name }}" data-object-id="{{ object|attr:headers.0.name }}">
-                        {% if user.is_authenticated %}
-                        <td><input type="checkbox" class="row-selector" onclick="updateButtonStates()"></td>
-                        {% endif %}
-
-                        {% for header in headers %}
-                        <td>{{ object|attr:header.name }}</td>
-                        {% endfor %}
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div> {% endcomment %} -->
 
         <!-- Pagination -->
         <div class="pagination">
