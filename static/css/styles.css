@@ -322,17 +322,17 @@ hr {
   font-size: 14px;
   margin-top: 10px;
   box-shadow: 0 2px 6px rgba(180, 180, 180, 0.1);
+  table-layout: auto;
 }
 
 .table th,
 .table td {
   padding: 10px 10px;
   text-align: left;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;
   transition: all 0.3s ease;
-  white-space: nowrap;
+  min-width: 30px;
+  max-width: 300px;
 }
 
 .table tbody tr:nth-child(odd) {
