@@ -315,14 +315,14 @@ hr {
 
 .table {
   width: 100%;
-  border-collapse: collapse;
+  /* border-collapse: collapse; */
   background-color: #ffffff;
-  border-radius: 8px;
   overflow-x: auto;
   font-size: 14px;
   margin-top: 10px;
   box-shadow: 0 2px 6px rgba(180, 180, 180, 0.1);
   table-layout: auto;
+  border-spacing: -1px;
 }
 
 .table th,
@@ -330,9 +330,13 @@ hr {
   padding: 10px 10px;
   text-align: left;
   white-space: normal;
-  transition: all 0.3s ease;
   min-width: 30px;
   max-width: 300px;
+  border: 1.5px solid #f5f0eb;
+}
+
+.table th {
+  border:none;
 }
 
 .table tbody tr:nth-child(odd) {
@@ -341,6 +345,10 @@ hr {
 
 .table tbody tr:hover {
   background-color: #f5f0eb;
+}
+
+.table tbody tr:hover td {
+  border-color: #ffffff;
 }
 
 .header-content {
@@ -379,13 +387,14 @@ td.hidden-column {
   background: transparent !important;
 }
 
-.table tbody tr {
-  border: 1px solid #f5f0eb;
+
+.table tbody tr.selected {
+  outline: 2.5px solid #5a7d5a;
+  outline-offset: -3px;
+  /* padding: 0 20px; */
 }
 
-.table tr.selected {
-  border: 1px solid #5a7d5a !important;
-}
+
 
 .table input[type="checkbox"]:checked {
   accent-color: #5a7d5a;
