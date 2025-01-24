@@ -14,24 +14,30 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <div>
-        <div class="logo">U OF T ARCHEOLOGY<hr></div>
+        <!-- <h1 class="logo">U OF T ARCHEOLOGY</h1> -->
+
+        <img src="{% static 'images/uoft-logo.png' %}" alt="U of T Logo" class="logo">
+
+    
+
         
-        <a href="{% url 'dashboard' %}" class="current-page">
+        <!-- Dashboard -->
+        <a href="{% url 'dashboard' %}">
             <i class="fas fa-tachometer-alt"></i>Dashboard
         </a>
         
         <!-- Provenience -->
         <div class="dropdown">
-            <a href="#" class="dropdown-trigger">
-            <i class="fas fa-map-marked-alt"></i>Provenience
-            <i class="fas fa-chevron-right"></i>
+            <a href="#" class="dropdown-trigger current-page">
+                <i class="fas fa-map-marked-alt"></i></i>Provenience
+                <i class="fas fa-chevron-right"></i>
             </a>
             <div class="dropdown-content">
-            <a href="{% url 'table_view' model_name='Site' %}"><i class="fas fa-map"></i>Sites</a>
-            <a href="#"><i class="fas fa-layer-group"></i>Areas</a>
-            <a href="#"><i class="fas fa-th"></i>Loci</a>
-            <a href="#"><i class="fas fa-shopping-bag"></i>Bags</a>
-            <a href="#"><i class="fas fa-box"></i>Artifacts</a>
+                <a href="{% url 'table_view' model_name='Site' %}"><i class="fas fa-map"></i>Sites</a>
+                <a href="#"><i class="fas fa-layer-group"></i>Areas</a>
+                <a href="#"><i class="fas fa-th"></i>Loci</a>
+                <a href="#"><i class="fas fa-shopping-bag"></i>Bags</a>
+                <a href="#"><i class="fas fa-box"></i>Artifacts</a>
             </div>
         </div>
 
@@ -98,176 +104,192 @@
             <a href="#"><i class="fas fa-handshake"></i>Loans</a>
             </div>
         </div>
+
+        <hr>
+
         </div>
     </div>
 
-    <div class="main-content">
-        <h2>{{ model_name }}</h2>
-    
-        <!-- Actions -->
-        <div class="actions-container">
-            <div class="action-buttons">
-            {% if user.is_authenticated %}
-                {% if can_add %}
-                    <button id="addButton" onclick="openAddForm()">Add</button>
-                {% elif user.is_staff %}
-                    <button id="addButton" onclick="openAddForm()" disabled>Add</button>
-                {% endif %}
-                
-                {% if can_edit %}
-                    <button id="editButton" onclick="editSelected()" disabled>Edit Selected</button>
-                {% elif user.is_staff %}
-                    <button id="editButton" onclick="editSelected()" disabled>Edit Selected</button>
-                {% endif %}
-                
-                {% if can_delete %}
-                    <button id="deleteButton" onclick="deleteSelected()" disabled>Delete Selected</button>
-                {% elif user.is_staff %}
-                    <button id="deleteButton" onclick="deleteSelected()" disabled>Delete Selected</button>
-                {% endif %}
-                
-                {% if can_edit %}
-                    <button id="saveButton" onclick="saveSelected()" style="display:none;">Save Changes</button>
-                {% endif %}
-            {% endif %}
-            </div>
-            <div class="column-toggle-dropdown">
-                <button id="toggleButton">Show/Hide Columns</button>
-                <div id="columnList" class="dropdown-content">
-                    {% for header in headers %}
-                        <label>
-                            <input type="checkbox" checked data-column="{{ forloop.counter0 }}">
-                            {{ header.verbose_name }}
-                        </label>
-                    {% endfor %}
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Header -->
+        <div class="header">
+            <i class="fas fa-bars" id="menu-toggle"></i>
+         </div>
+
+         <hr>
+
+        <div class="container">
+        <div class="title">
+            <h1>{{ model_name }}</h1>   
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Actions -->
+            <div class="actions-container">
+                <div class="action-buttons">
+                    <div class="left-buttons">
+                    <button onclick="exportTable()"><i class="fas fa-download"></i>Export</button>
+                    {% if user.is_authenticated %}
+                        {% if can_edit %}
+                            <button id="editButton" onclick="editSelected()" enabled><i class="fas fa-marker"></i>Edit Selected</button>
+                        {% elif user.is_staff %}
+                            <button id="editButton" onclick="editSelected()" disabled><i class="fas fa-edit"></i>Edit Selected</button>
+                        {% endif %}
+                        
+                        {% if can_delete %}
+                            <button id="deleteButton" onclick="deleteSelected()" enabled><i class="fas fa-minus-circle"></i>Delete Selected</button>
+                        {% elif user.is_staff %}
+                            <button id="deleteButton" onclick="deleteSelected()" disabled><i class="fas fa-minus-circle"></i>Delete Selected</button>
+                        {% endif %}
+                        
+                        {% if can_edit %}
+                            <button id="saveButton" onclick="saveSelected()" style="display:none;">Save Changes</button>
+                        {% endif %}
+                    {% endif %}
+                    </div>
+                    <div class="right-buttons">
+                        <!-- <div class="column-toggle-dropdown">
+                            <button id="toggleButton"><i class="fas fa-grip-vertical"></i></button>
+                            <div id="columnList" class="dropdown-content">
+                                {% for header in headers %}
+                                    <label>
+                                        <input type="checkbox" checked data-column="{{ forloop.counter0 }}">
+                                        {{ header.verbose_name }}
+                                    </label>
+                                {% endfor %}
+                            </div>
+                        </div> -->
+                        <div class="dropdown column-toggle-dropdown">
+                            <a href="#" class="dropdown-trigger">
+                                <button id="toggleButton"><i class="fas fa-grip-vertical"></i></button>
+                                <!-- <i class="fas fa-grip-vertical"></i> -->
+                            </a>
+                            <div class="dropdown-content">
+                                {% for header in headers %}
+                                    <a href="#">
+                                        <input type="checkbox" checked data-column="{{ forloop.counter0 }}">
+                                        {{ header.verbose_name }}
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <!-- <button class="fas fa-sync" onclick="refreshTable()"></button> -->
+                        <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Search...">
+                        
+                        {% if can_add %}
+                            <button id="addButton" onclick="openAddForm()"><i class="fas fa-plus"></i>Add</button>
+                        {% elif user.is_staff %}
+                            <button id="addButton" onclick="openAddForm()" disabled><i class="fas fa-plus"></i>Add</button>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
-        </div>
-    
-        <!-- Add to Table Form -->
-        <div id="addFormContainer" class="form-container">
-            <form id="addForm" method="post">
-            {% csrf_token %}
-            <div class="form-content">
-                {% for header in headers %}
-                    <div class="form-group">
-                    <label for="{{ header.name }}">{{ header.verbose_name }}</label>
-                    {% if header.type == 'boolean' %}
-                        <select id="{{ header.name }}" name="{{ header.name }}" class="form-input" required>
-                        <option value="">Select an option</option>
-                        <option value="true">Yes</option>
-                        <option value="false">No</option>
-                        </select>
-                    {% elif header.type == 'choice' %}
-                      <select id="{{ header.name }}" name="{{ header.name }}" class="form-input" required>
-                        <option value="">Choose</option>
-                        {% for choice in header.choices %}
-                          <option value="{{ choice.value }}">{{ choice.display }}</option>
-                        {% endfor %}
-                      </select>
-                    {% else %}
-                      <input type="text" id="{{ header.name }}" name="{{ header.name }}" class="form-input" required>
-                    {% endif %}
-                  </div>
-              {% endfor %}
-            </div>
-            <div class="form-buttons">
-              <button type="submit" class="submit-button">Add</button>
-              <button type="button" onclick="closeAddSiteForm()" class="cancel-button">Cancel</button>
-            </div>
-          </form>
-        </div>
-    
-        <!-- Column Toggles -->
-        {% comment %} <div class="toggle-columns">
-            Toggle columns: 
-            {% for header in headers %}
-                <a class="toggle-vis" data-column="{{ forloop.counter0 }}">{{ header.verbose_name }}</a>
-                {% if not forloop.last %} - {% endif %}
-            {% endfor %}
-        </div> 
-        <div class="column-toggle-dropdown">
-            <button id="toggleButton">Show/Hide Columns</button>
-            <div id="columnList" class="dropdown-content">
-                {% for header in headers %}
-                    <label>
-                        <input type="checkbox" checked data-column="{{ forloop.counter0 }}">
-                        <a class="toggle-vis" data-column="{{ forloop.counter0 }}">{{ header.verbose_name }}</a>
-                    </label>
-                {% endfor %}
-            </div>
-        </div>
-         {% endcomment %}
-        <!-- Table -->
-        <div class="table-container">
-        <table id="example" class="table" style="width:100%">
-            <thead>
-                <tr>
-                    {% if user.is_authenticated %}
-                        <th><input type="checkbox" id="selectAll" onclick="toggleSelectAll(this)"></th>
-                    {% endif %}
-
+        
+            <!-- Add to Table Form -->
+            <div id="addFormContainer" class="form-container">
+                <form id="addForm" method="post">
+                {% csrf_token %}
+                <div class="form-content">
                     {% for header in headers %}
-                    <th>
-                        <div class="header-content">
-                            <span>{{ header.verbose_name }}</span>
-                        </div>
-                    </th>
-                    {% endfor %}
-                </tr>
-            </thead>
-            <tbody>
-                {% for object in objects %}
-                    <tr data-model-name="{{ model_name }}" data-object-id="{{ object|attr:headers.0.name }}">
+                        <div class="form-group">
+                        <label for="{{ header.name }}">{{ header.verbose_name }}</label>
+                        {% if header.type == 'boolean' %}
+                            <select id="{{ header.name }}" name="{{ header.name }}" class="form-input" required>
+                            <option value="">Select an option</option>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                            </select>
+                        {% elif header.type == 'choice' %}
+                        <select id="{{ header.name }}" name="{{ header.name }}" class="form-input" required>
+                            <option value="">Choose</option>
+                            {% for choice in header.choices %}
+                            <option value="{{ choice.value }}">{{ choice.display }}</option>
+                            {% endfor %}
+                        </select>
+                        {% else %}
+                        <input type="text" id="{{ header.name }}" name="{{ header.name }}" class="form-input" required>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                </div>
+                <div class="form-buttons">
+                <button type="submit" class="submit-button">Add</button>
+                <button type="button" onclick="closeAddSiteForm()" class="cancel-button">Cancel</button>
+                </div>
+            </form>
+            </div>
+            
+            <!-- Table -->
+            <div class="table-container">
+            <table id="example" class="table" style="width:100%">
+                <thead>
+                    <tr>
                         {% if user.is_authenticated %}
-                        <td><input type="checkbox" class="row-selector" onclick="updateButtonStates()"></td>
+                            <th><input type="checkbox" id="selectAll" onclick="toggleSelectAll(this)"></th>
                         {% endif %}
 
                         {% for header in headers %}
-                        <td>{{ object|attr:header.name }}</td>
+                        <th>
+                            <div class="header-content">
+                                <span>{{ header.verbose_name }}</span>
+                            </div>
+                        </th>
                         {% endfor %}
                     </tr>
-                {% endfor %}
-            </tbody>
-            <tfoot>
-                <tr>
-                    {% if user.is_authenticated %}
-                        <th><input type="checkbox" id="selectAll" onclick="toggleSelectAll(this)"></th>
-                    {% endif %}
+                </thead>
+                <tbody>
+                    {% for object in objects %}
+                        <tr data-model-name="{{ model_name }}" data-object-id="{{ object|attr:headers.0.name }}">
+                            {% if user.is_authenticated %}
+                            <td><input type="checkbox" class="row-selector" onclick="updateButtonStates()"></td>
+                            {% endif %}
 
-                    {% for header in headers %}
-                    <th>
-                        <div class="header-content">
-                            <span>{{ header.verbose_name }}</span>
-                        </div>
-                    </th>
+                            {% for header in headers %}
+                            <td>{{ object|attr:header.name }}</td>
+                            {% endfor %}
+                        </tr>
                     {% endfor %}
-                </tr>
-            </tfoot>
-        </table>
-        </div>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        {% if user.is_authenticated %}
+                            <th><input type="checkbox" id="selectAll" onclick="toggleSelectAll(this)"></th>
+                        {% endif %}
 
-        <!-- Pagination -->
-        <div class="pagination">
-            {% if page_obj.has_previous %}
-                <a href="?page=1" class="pagination-link first"><i class="fas fa-chevron-left"></i></a>
-            {% endif %}
-        
-            {% for i in page_obj.paginator.page_range %}
-                {% if page_obj.number == i %}
-                    <span class="pagination-link active">{{ i }}</span>
-                {% elif i >= page_obj.number|add:"-2" and i <= page_obj.number|add:"2" %}
-                    <a href="?page={{ i }}" class="pagination-link">{{ i }}</a>
+                        {% for header in headers %}
+                        <th>
+                            <div class="header-content">
+                                <span>{{ header.verbose_name }}</span>
+                            </div>
+                        </th>
+                        {% endfor %}
+                    </tr>
+                </tfoot>
+            </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1" class="pagination-link first"><i class="fas fa-chevron-left"></i></a>
                 {% endif %}
-            {% endfor %}
-        
-            {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.paginator.num_pages }}" class="pagination-link last"><i class="fas fa-chevron-right"></i></a>
-            {% endif %}
+            
+                {% for i in page_obj.paginator.page_range %}
+                    {% if page_obj.number == i %}
+                        <span class="pagination-link active">{{ i }}</span>
+                    {% elif i >= page_obj.number|add:"-2" and i <= page_obj.number|add:"2" %}
+                        <a href="?page={{ i }}" class="pagination-link">{{ i }}</a>
+                    {% endif %}
+                {% endfor %}
+            
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.paginator.num_pages }}" class="pagination-link last"><i class="fas fa-chevron-right"></i></a>
+                {% endif %}
+            </div>
         </div>
-
-
-        
+        </div>
     </div> 
 </body>
 

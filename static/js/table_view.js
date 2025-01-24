@@ -12,6 +12,60 @@ function closeAddForm() {
     formContainer.style.display = 'none';
 }
 
+document.addEventListener('DOMContentLoaded', function() {
+    const dropdowns = document.querySelectorAll('.dropdown');
+    
+    dropdowns.forEach(dropdown => {
+      const trigger = dropdown.querySelector('.dropdown-trigger');
+      
+      trigger.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Close all other dropdowns first
+        dropdowns.forEach(otherDropdown => {
+            if (otherDropdown !== dropdown && otherDropdown.classList.contains('active')) {
+                otherDropdown.classList.remove('active');
+                const otherChevron = otherDropdown.querySelector('.fa-chevron-down');
+                if (otherChevron) {
+                    otherChevron.classList.remove('fa-chevron-down');
+                    otherChevron.classList.add('fa-chevron-right');
+                }
+            }
+        });
+
+        // Toggle active class on dropdown
+        dropdown.classList.toggle('active');
+        
+        // Find and toggle chevron icon
+        const chevron = this.querySelector('.fa-chevron-right, .fa-chevron-down');
+        if (chevron.classList.contains('fa-chevron-right')) {
+          chevron.classList.remove('fa-chevron-right');
+          chevron.classList.add('fa-chevron-down');
+        } else {
+          chevron.classList.remove('fa-chevron-down');
+          chevron.classList.add('fa-chevron-right');
+        }
+      });
+    });
+  });
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Reuse existing dropdown functionality
+    
+    // Add column visibility handler
+    const columnCheckboxes = document.querySelectorAll('.column-toggle-dropdown input[type="checkbox"]');
+    columnCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function(e) {
+            e.stopPropagation(); // Prevent dropdown from closing
+            const columnIndex = this.dataset.column;
+            const cells = document.querySelectorAll(`table tr > *:nth-child(${parseInt(columnIndex) + 2})`);
+            cells.forEach(cell => {
+                cell.style.display = this.checked ? '' : 'none';
+            });
+        });
+    });
+});
+
 function updateButtonStates() {
     const selectedRows = document.querySelectorAll('.row-selector:checked').length;
     const editButton = document.getElementById('editButton');
