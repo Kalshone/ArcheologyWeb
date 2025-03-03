@@ -262,12 +262,32 @@ input[type="checkbox"]:checked {
   /* background-color: #fbf9f6; */
 }
 
+.auth-button {
+  background-color: #5a7d5a;
+  color: #ffffff !important;
+  border: none;
+  border-radius: 5px;
+  padding: 6px 15px;
+  font-size: 0.8em;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  margin-right: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.auth-button:hover {
+  background-color: #4a6b4a;
+}
+
 .header {
   display: flex;
   justify-content: flex-end;
   padding: 35px 20px 0 20px;
-  /* margin-bottom: 5px; */
   background-color: #ffffff;
+  align-items: center;
 }
 
 .main-content {
