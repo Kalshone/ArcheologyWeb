@@ -120,7 +120,8 @@ def dashboard(request):
 
 def table_view(request, model_name):
     model = apps.get_model(app_label='myapp', model_name=model_name)
-    objects = model.objects.all()
+    pk_field = model._meta.pk.name
+    objects = model.objects.all().order_by(pk_field)
     
     can_add = False
     can_edit = False

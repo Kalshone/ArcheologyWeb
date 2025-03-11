@@ -13,13 +13,8 @@
   <!-- Sidebar -->
   <div class="sidebar">
     <div>
-    <!-- <h1 class="logo">U OF T ARCHEOLOGY</h1> -->
-
     <img src="{% static 'images/uoft-logo.png' %}" alt="U of T Logo" class="logo">
 
-
-
-    
     <!-- Dashboard -->
     <a href="{% url 'dashboard' %}" class="current-page">
         <i class="fas fa-tachometer-alt"></i>Dashboard
@@ -33,50 +28,50 @@
         </a>
         <div class="dropdown-content">
             <a href="{% url 'table_view' model_name='Sites' %}"><i class="fas fa-map"></i>Sites</a>
-            <a href="{% url 'table_view' model_name='Sites' %}"><i class="fas fa-layer-group"></i>Areas</a>
-            <a href="{% url 'table_view' model_name='Sites' %}"><i class="fas fa-th"></i>Loci</a>
-            <a href="{% url 'table_view' model_name='Sites' %}"><i class="fas fa-shopping-bag"></i>Bags</a>
-            <a href="{% url 'table_view' model_name='Sites' %}"><i class="fas fa-box"></i>Artifacts</a>
+            <a href="{% url 'table_view' model_name='Areas' %}"><i class="fas fa-layer-group"></i>Areas</a>
+            <a href="{% url 'table_view' model_name='Loci' %}"><i class="fas fa-th"></i>Loci</a>
+            <a href="{% url 'table_view' model_name='Bags' %}"><i class="fas fa-shopping-bag"></i>Bags</a>
+            <a href="{% url 'table_view' model_name='Artifacts' %}"><i class="fas fa-box"></i>All Artifacts</a>
         </div>
     </div>
 
     <!-- Ceramics -->
     <div class="dropdown">
-        <a href="#" class="dropdown-trigger">
-        <i class="fas fa-mortar-pestle"></i>Ceramics
-        <i class="fas fa-chevron-right"></i>
-        </a>
-        <div class="dropdown-content">
-        <a href="{% url 'table_view' model_name='Sites' %}"><i class="fas fa-cube"></i>Pottery Main</a>
-        <a href="{% url 'table_view' model_name='Sites' %}"><i class="fas fa-circle"></i>Rims</a>
-        <a href="{% url 'table_view' model_name='Sites' %}"><i class="fas fa-square"></i>Bases</a>
-        <a href="{% url 'table_view' model_name='Sites' %}"><i class="fas fa-grip-lines"></i>Handles</a>
-        </div>
+      <a href="#" class="dropdown-trigger">
+      <i class="fas fa-mortar-pestle"></i>Ceramics
+      <i class="fas fa-chevron-right"></i>
+      </a>
+      <div class="dropdown-content">
+      <a href="{% url 'table_view' model_name='Pottery_Main' %}"><i class="fas fa-cube"></i>Pottery Main</a>
+      <a href="{% url 'table_view' model_name='Pottery_Rims' %}"><i class="fas fa-circle"></i>Rims</a>
+      <a href="{% url 'table_view' model_name='Pottery_Bases' %}"><i class="fas fa-square"></i>Bases</a>
+      <a href="{% url 'table_view' model_name='Pottery_Handles' %}"><i class="fas fa-grip-lines"></i>Handles</a>
+      </div>
     </div>
 
     <!-- Lithics -->
     <div class="dropdown">
-        <a href="#" class="dropdown-trigger">
-        <i class="fas fa-gem"></i>Lithics
-        <i class="fas fa-chevron-right"></i>
-        </a>
-        <div class="dropdown-content">
-        <a href="{% url 'table_view' model_name='Sites' %}"><i class="fas fa-circle"></i>Cores</a>
-        <a href="{% url 'table_view' model_name='Sites' %}"><i class="fas fa-cut"></i>Blade/Flake Tools</a>
-        <a href="{% url 'table_view' model_name='Sites' %}"><i class="fas fa-shapes"></i>Debitage</a>
-        </div>
+      <a href="#" class="dropdown-trigger">
+      <i class="fas fa-gem"></i>Lithics
+      <i class="fas fa-chevron-right"></i>
+      </a>
+      <div class="dropdown-content">
+      <a href="{% url 'table_view' model_name='Cores' %}"><i class="fas fa-circle"></i>Cores</a>
+      <a href="{% url 'table_view' model_name='BladeFlake_Tool' %}"><i class="fas fa-cut"></i>Blade/Flake Tools</a>
+      <a href="{% url 'table_view' model_name='Debitage' %}"><i class="fas fa-shapes"></i>Debitage</a>
+      </div>
     </div>
 
     <!-- Metals & Glass -->
     <div class="dropdown">
-        <a href="#" class="dropdown-trigger">
+      <a href="#" class="dropdown-trigger">
         <i class="fas fa-coins"></i>Metals & Glass
         <i class="fas fa-chevron-right"></i>
         </a>
         <div class="dropdown-content">
-        <a href="{% url 'table_view' model_name='Sites' %}"><i class="fas fa-hammer"></i>Metal Objects</a>
-        <a href="{% url 'table_view' model_name='Sites' %}"><i class="fas fa-wine-glass"></i>Glass</a>
-        <a href="{% url 'table_view' model_name='Sites' %}"><i class="fas fa-star"></i>Special Finds</a>
+        <a href="{% url 'table_view' model_name='Metal_Objects' %}"><i class="fas fa-hammer"></i>Metal Objects</a>
+        <a href="{% url 'table_view' model_name='Glass' %}"><i class="fas fa-wine-glass"></i>Glass</a>
+        <a href="{% url 'table_view' model_name='Special_Finds' %}"><i class="fas fa-star"></i>Special Finds</a>
         </div>
     </div>
 
@@ -87,8 +82,8 @@
         <i class="fas fa-chevron-right"></i>
         </a>
         <div class="dropdown-content">
-        <a href="{% url 'table_view' model_name='Sites' %}"><i class="fas fa-skull"></i>Osteology</a>
-        <a href="{% url 'table_view' model_name='Sites' %}"><i class="fas fa-tools"></i>Worked Bone</a>
+        <a href="{% url 'table_view' model_name='Osteology' %}"><i class="fas fa-skull"></i>Osteology</a>
+        <a href="{% url 'table_view' model_name='Worked_Bone' %}"><i class="fas fa-tools"></i>Worked Bone</a>
         </div>
     </div>
 
@@ -99,8 +94,8 @@
         <i class="fas fa-chevron-right"></i>
         </a>
         <div class="dropdown-content">
-        <a href="{% url 'table_view' model_name='Sites' %}"><i class="fas fa-camera"></i>Photos</a>
-        <a href="{% url 'table_view' model_name='Sites' %}"><i class="fas fa-handshake"></i>Loans</a>
+        <a href="{% url 'table_view' model_name='Photos' %}"><i class="fas fa-camera"></i>Photos</a>
+        <a href="{% url 'table_view' model_name='Loans' %}"><i class="fas fa-handshake"></i>Loans</a>
         </div>
     </div>
 
