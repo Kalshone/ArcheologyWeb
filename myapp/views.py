@@ -160,7 +160,12 @@ def table_view(request, model_name):
         'name': field.name,
         'verbose_name': field.verbose_name,
         'is_primary_key': field.primary_key,
-        'type': field.get_internal_type()
+        'type': field.__class__.__name__,
+        'required': not field.blank and not field.primary_key,
+        'max_length': getattr(field, 'max_length', None),
+        'max_digits': getattr(field, 'max_digits', None),
+        'decimal_places': getattr(field, 'decimal_places', None),
+        'choices': [{'value': choice[0], 'display': choice[1]} for choice in field.choices] if field.choices else None
     } for field in model._meta.fields]
     
     return render(request, 'table_view.html', {

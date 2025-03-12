@@ -180,30 +180,77 @@
                     {% for header in headers %}
                         <div class="form-group">
                         <label for="{{ header.name }}">{{ header.verbose_name }}</label>
-                        {% if header.type == 'boolean' %}
-                            <select id="{{ header.name }}" name="{{ header.name }}" class="form-input" required>
-                            <option value="">Select an option</option>
-                            <option value="true">Yes</option>
-                            <option value="false">No</option>
+                        
+                        {% if header.type == 'BooleanField' %}
+                            <select id="{{ header.name }}" name="{{ header.name }}" class="form-input"{% if header.required %} required{% endif %}>
+                                <option value="">Select</option>
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
                             </select>
-                        {% elif header.type == 'choice' %}
-                        <select id="{{ header.name }}" name="{{ header.name }}" class="form-input" required>
-                            <option value="">Choose</option>
-                            {% for choice in header.choices %}
-                            <option value="{{ choice.value }}">{{ choice.display }}</option>
-                            {% endfor %}
-                        </select>
+                            
+                        {% elif header.type == 'CharField' and header.choices %}
+                            <select id="{{ header.name }}" name="{{ header.name }}" class="form-input"{% if header.required %} required{% endif %}>
+                                <option value="">Select {{ header.verbose_name }}</option>
+                                {% for choice in header.choices %}
+                                    <option value="{{ choice.value }}">{{ choice.display }}</option>
+                                {% endfor %}
+                            </select>
+                            
+                        {% elif header.type == 'ForeignKey' %}
+                            <select id="{{ header.name }}" name="{{ header.name }}" class="form-input"{% if header.required %} required{% endif %}>
+                                <option value="">Select {{ header.verbose_name }}</option>
+                                {% for choice in header.choices %}
+                                    <option value="{{ choice.id }}">{{ choice.display }}</option>
+                                {% endfor %}
+                            </select>
+                            
+                        {% elif header.type == 'DateField' %}
+                            <input type="date" id="{{ header.name }}" name="{{ header.name }}" class="form-input"
+                                {% if header.required %} required{% endif %}
+                                placeholder="YYYY-MM-DD">
+                            
+                        {% elif header.type == 'DateTimeField' %}
+                            <input type="datetime-local" id="{{ header.name }}" name="{{ header.name }}" class="form-input"
+                                {% if header.required %} required{% endif %}>
+                            
+                        {% elif header.type == 'DecimalField' %}
+                            <input type="number" id="{{ header.name }}" name="{{ header.name }}" class="form-input" 
+                                step="0.01" min="0"{% if header.required %} required{% endif %}
+                                {% if header.max_digits and header.decimal_places %}
+                                placeholder="Max {{ header.max_digits }} digits, {{ header.decimal_places }} decimals"
+                                {% endif %}>
+
+                        {% elif header.type == 'IntegerField' or header.type == 'PositiveIntegerField' %}
+                            <input type="number" id="{{ header.name }}" name="{{ header.name }}" class="form-input" 
+                                step="1"{% if header.required %} required{% endif %}
+                                {% if header.type == 'PositiveIntegerField' %}min="0"{% endif %}
+                                placeholder="Enter whole number">
+                            
+                        {% elif header.type == 'TextField' %}
+                            <textarea id="{{ header.name }}" name="{{ header.name }}" class="form-input"{% if header.required %} required{% endif %}
+                                placeholder="Enter {{ header.verbose_name }}"></textarea>
+                            
+                        {% elif header.type == 'FileField' or header.type == 'ImageField' %}
+                            <input type="file" id="{{ header.name }}" name="{{ header.name }}" class="form-input"{% if header.required %} required{% endif %}>
+                            
                         {% else %}
-                        <input type="text" id="{{ header.name }}" name="{{ header.name }}" class="form-input" required>
+                            <input type="text" id="{{ header.name }}" name="{{ header.name }}" class="form-input"
+                                {% if header.required %}required{% endif %}
+                                {% if header.max_length %}maxlength="{{ header.max_length }}"{% endif %}
+                                placeholder="Enter {{ header.verbose_name }}">
                         {% endif %}
-                    </div>
-                {% endfor %}
+                        
+                        {% if header.help_text %}
+                            <small class="form-help-text">{{ header.help_text }}</small>
+                        {% endif %}
+                        </div>
+                    {% endfor %}
                 </div>
                 <div class="form-buttons">
-                <button type="submit" class="submit-button">Add</button>
-                <button type="button" onclick="closeAddForm()" class="cancel-button">Cancel</button>
+                    <button type="submit" class="submit-button">Add</button>
+                    <button type="button" onclick="closeAddForm()" class="cancel-button">Cancel</button>
                 </div>
-            </form>
+                </form>
             </div>
             
             <!-- Table -->

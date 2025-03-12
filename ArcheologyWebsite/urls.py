@@ -29,10 +29,6 @@ urlpatterns = [
     path('manage-permissions/', views.manage_editor_permissions, name='manage_permissions'),
     
     path('<str:model_name>/', views.table_view, name='table_view'),
-    # path('sites/', views.sites, name='sites'),
-    # path('areas/', views.areas, name='areas'),
-    # path('pottery/', views.pottery, name='pottery'),
-    # path('artifacts/', views.artifacts, name='artifacts'),
     
     path('delete/<str:model_name>/<int:object_id>/', views.delete_object, name='delete_object'),
     path('update_object/<str:model_name>/<int:object_id>/', views.update_object, name='update_object'), 

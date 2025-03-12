@@ -497,9 +497,9 @@ input[type="checkbox"]:checked {
 }
 
 .action-buttons input[type="text"] {
-  padding: 8px;
+  padding: 10px;
   border: 1px solid #e0e0e0;
-  border-radius: 6px;
+  border-radius: 5px;
   font-size: 14px;
   width: 200px;
 }
@@ -512,7 +512,7 @@ input[type="checkbox"]:checked {
 }
 
 .action-buttons .fas {
-  padding: 5px;
+  padding: 3px;
   background-color: #5a7d5a;
   border-radius: 25%;
   color: #ffffff;
@@ -570,27 +570,109 @@ input[type="checkbox"]:checked {
   font-weight: 600;
 }
 
-.form-input {
+.form-input,
+input[type="text"],
+input[type="number"],
+input[type="date"],
+input[type="datetime-local"],
+input[type="file"],
+select,
+textarea {
   width: 100%;
-  padding: 8px;
+  height: 36px;
+  padding: 8px 10px;
   border: 1px solid #e0e0e0;
   border-radius: 6px;
   font-size: 14px;
   color: #4f3c1f;
   background-color: #fbf9f6;
-  transition: border-color 0.3s ease, background-color 0.3s ease;
+  font-family: 'Helvetica', Arial, sans-serif;
+  box-sizing: border-box;
 }
 
-.form-input:focus {
+/* Focus state */
+.form-input:focus,
+input:focus,
+select:focus,
+textarea:focus {
   outline: none;
   border-color: #5a7d5a;
   background-color: #ffffff;
 }
 
+/* Dropdown styling */
+select.form-input {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234f3c1f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 12px;
+  padding-right: 30px;
+}
+
+/* Text area - allow vertical expansion */
+textarea.form-input {
+  min-height: 36px;
+  resize: vertical;
+}
+
+select.form-input.placeholder {
+  color: #aaa !important;
+  font-style: italic;
+}
+
+/* Placeholder styling */
+.form-input::placeholder {
+  color: #aaa;
+  font-style: italic;
+  opacity: 0.7;
+}
+
+/* Form buttons styling to match other buttons */
 .form-buttons {
   display: flex;
-  margin-top: 10px;
-} 
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.form-buttons button {
+  border: none;
+  padding: 8px 15px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  color: #ffffff;
+}
+
+.submit-button {
+  background-color: #5a7d5a;
+}
+
+.submit-button:hover {
+  background-color: #426b42;
+}
+
+.cancel-button {
+  background-color: #997a63;
+}
+
+.cancel-button:hover {
+  background-color: #876954;
+}
+
+/* Required field indicator */
+.form-group label:after {
+  content: "*";
+  color: #c45b5b;
+  margin-left: 3px;
+  display: none;
+}
+
+.form-group:has(.form-input[required]) label:after {
+  display: inline;
+}
+
 
 
 /* Pagination */
@@ -645,3 +727,4 @@ input[type="checkbox"]:checked {
     box-shadow: none;
     padding: 0;
 }
+
