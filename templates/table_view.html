@@ -199,8 +199,9 @@
                         {% elif header.type == 'ForeignKey' %}
                             <select id="{{ header.name }}" name="{{ header.name }}" class="form-input"{% if header.required %} required{% endif %}>
                                 <option value="">Select {{ header.verbose_name }}</option>
-                                {% for choice in header.choices %}
-                                    <option value="{{ choice.id }}">{{ choice.display }}</option>
+                                <!-- {{ header.related_objects|length }} -->
+                                {% for related_obj in header.related_objects %}
+                                    <option value="{{ related_obj.pk }}">{{ related_obj }}</option>
                                 {% endfor %}
                             </select>
                             
@@ -279,7 +280,7 @@
                             {% endif %}
 
                             {% for header in headers %}
-                            <td>{{ object|attr:header.name }}</td>
+                            <td data-full-text="{% if header.choices %}{{ object|attr:header.name|get_choice_display:header.choices }}{% endif %}">{{ object|attr:header.name }}</td>
                             {% endfor %}
                         </tr>
                     {% endfor %}

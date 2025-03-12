@@ -728,3 +728,15 @@ select.form-input.placeholder {
     padding: 0;
 }
 
+.tooltip {
+  position: absolute;
+  background-color: #ffffff;
+  padding: 5px 8px;
+  border-radius: 4px;
+  font-size: 13px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  z-index: 1000;
+  pointer-events: none;
+  max-width: 250px;
+  word-wrap: break-word;
+}

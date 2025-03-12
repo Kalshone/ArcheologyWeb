@@ -13,3 +13,10 @@ def filter_permission(permissions, args):
         return permissions.get(editor_id=editor_id, table_name=table_name)
     except (ValueError, AttributeError):
         return None
+
+@register.filter
+def get_choice_display(value, choices):
+    for choice in choices:
+        if choice.get('value') == value:
+            return choice.get('display')
+    return value

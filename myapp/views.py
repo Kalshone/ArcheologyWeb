@@ -150,23 +150,48 @@ def table_view(request, model_name):
     
     if request.method == 'POST':
         object_data = {field: request.POST[field] for field in request.POST if field != 'csrfmiddlewaretoken'}
+        
+        # Process foreign keys
+        for field in model._meta.fields:
+            if field.__class__.__name__ == 'ForeignKey' and field.name in object_data:
+                # Get the related model
+                related_model = field.remote_field.model
+                # Get the object from the related model
+                try:
+                    related_obj = related_model.objects.get(pk=object_data[field.name])
+                    object_data[field.name] = related_obj
+                except related_model.DoesNotExist:
+                    return JsonResponse({
+                        'success': False, 
+                        'error': f"Related {field.verbose_name} with id {object_data[field.name]} does not exist."
+                    })
+        
         try:
             obj = model.objects.create(**object_data)
             return JsonResponse({'success': True})
         except IntegrityError:
             return JsonResponse({'success': False, 'error': f"A {model_name} with this ID already exists."})
     
-    headers = [{
-        'name': field.name,
-        'verbose_name': field.verbose_name,
-        'is_primary_key': field.primary_key,
-        'type': field.__class__.__name__,
-        'required': not field.blank and not field.primary_key,
-        'max_length': getattr(field, 'max_length', None),
-        'max_digits': getattr(field, 'max_digits', None),
-        'decimal_places': getattr(field, 'decimal_places', None),
-        'choices': [{'value': choice[0], 'display': choice[1]} for choice in field.choices] if field.choices else None
-    } for field in model._meta.fields]
+    headers = []
+    for field in model._meta.fields:
+        field_info = {
+            'name': field.name,
+            'verbose_name': field.verbose_name,
+            'is_primary_key': field.primary_key,
+            'type': field.__class__.__name__,
+            'required': not field.blank and not field.primary_key,
+            'max_length': getattr(field, 'max_length', None),
+            'max_digits': getattr(field, 'max_digits', None),
+            'decimal_places': getattr(field, 'decimal_places', None),
+            'choices': [{'value': choice[0], 'display': choice[1]} for choice in field.choices] if field.choices else None
+        }
+        
+        # Add related objects for ForeignKey fields
+        if field.__class__.__name__ == 'ForeignKey':
+            related_model = field.remote_field.model
+            field_info['related_objects'] = related_model.objects.all()
+        
+        headers.append(field_info)
     
     return render(request, 'table_view.html', {
         'objects':  page_obj,

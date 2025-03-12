@@ -481,7 +481,7 @@ class Sites(models.Model):
     comments = models.TextField(blank=True)
 
     def __str__(self):
-        return f"{self.siteNo} - {self.name}"
+        return f"{self.siteNo}"
     
 class Areas(models.Model):
     siteNo = models.ForeignKey(Sites, on_delete=models.CASCADE)

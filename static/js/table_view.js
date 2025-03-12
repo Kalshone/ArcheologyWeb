@@ -42,6 +42,41 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+    // Create tooltip element
+    const tooltip = document.createElement('div');
+    tooltip.className = 'tooltip';
+    tooltip.style.display = 'none';
+    document.body.appendChild(tooltip);
+    
+    // Add event listeners to table cells
+    const tableCells = document.querySelectorAll('.table tbody td');
+    
+    tableCells.forEach(cell => {
+        // Show tooltip on mouseenter
+        cell.addEventListener('mouseenter', function(e) {
+            const fullText = this.dataset.fullText;
+            if (fullText && fullText !== this.textContent) {
+                tooltip.textContent = fullText;
+                tooltip.style.display = 'block';
+                tooltip.style.left = (e.pageX + 10) + 'px';
+                tooltip.style.top = (e.pageY + 10) + 'px';
+            }
+        });
+        
+        // Update tooltip position on mousemove
+        cell.addEventListener('mousemove', function(e) {
+            tooltip.style.left = (e.pageX + 10) + 'px';
+            tooltip.style.top = (e.pageY + 10) + 'px';
+        });
+        
+        // Hide tooltip on mouseleave
+        cell.addEventListener('mouseleave', function() {
+            tooltip.style.display = 'none';
+        });
+    });
+});
+
 // DROPDOWNS
 function toggleDropdown(dropdown) {
     dropdown.classList.toggle('active');
