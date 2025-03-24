@@ -274,7 +274,7 @@
                 </thead>
                 <tbody>
                     {% for object in objects %}
-                        <tr data-model-name="{{ model_name }}" data-object-id="{{ object|attr:headers.0.name }}">
+                        <tr data-model-name="{{ model_name }}" data-object-id="{{ object.pk }}">
                             {% if user.is_authenticated %}
                             <td><input type="checkbox" class="row-selector" onclick="updateButtonStates()"></td>
                             {% endif %}

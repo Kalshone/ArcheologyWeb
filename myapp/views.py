@@ -208,15 +208,25 @@ def table_view(request, model_name):
 @csrf_exempt
 def delete_object(request, model_name, object_id):
     if request.method == 'POST':
-        model = apps.get_model(app_label='myapp', model_name=model_name)
-        # Dynamically get the primary key field name
-        pk_field = model._meta.pk.name
-        obj = get_object_or_404(model, **{pk_field: object_id})
-        obj.delete()
-        # Get the redirect URL from the query parameters
-        redirect_url = request.GET.get('redirect_url', 'sites')
-        return redirect(redirect_url)  # Redirect to the specified URL
-    return HttpResponse(status=405)  # Method Not Allowed if not POST
+        try:
+            # Convert the first character to uppercase (Site instead of site)
+            model_name_capitalized = model_name.capitalize()
+            model = apps.get_model(app_label='myapp', model_name=model_name_capitalized)
+            # Dynamically get the primary key field name
+            pk_field = model._meta.pk.name
+            
+            # Debug information
+            print(f"Trying to delete {model_name_capitalized} with {pk_field}={object_id}")
+            
+            obj = get_object_or_404(model, **{pk_field: object_id})
+            obj.delete()
+            
+            return JsonResponse({'success': True})
+        except Exception as e:
+            print(f"Error deleting object: {str(e)}")
+            return JsonResponse({'success': False, 'error': str(e)}, status=400)
+    
+    return JsonResponse({'error': 'Method not allowed'}, status=405)
 
 import json
 from django.views.decorators.http import require_POST

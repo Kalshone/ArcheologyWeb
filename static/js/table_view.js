@@ -426,26 +426,32 @@ function deleteSelected() {
     const selectedRows = document.querySelectorAll('.row-selector:checked');
     if (selectedRows.length === 0) return;
     
-    if (confirm(`Are you sure you want to delete ${selectedRows.length} selected items?`)) {
-        const deletions = Array.from(selectedRows).map(checkbox => {
+    if (confirm(`Are you sure you want to delete ${selectedRows.length} selected item(s)?`)) {
+        let deletedCount = 0;
+        
+        Array.from(selectedRows).forEach(checkbox => {
             const row = checkbox.closest('tr');
-            return fetch(`/delete/${row.dataset.modelName}/${row.dataset.objectId}/`, {
+            const modelName = row.dataset.modelName.toLowerCase();
+            const objectId = row.dataset.objectId;
+            
+            fetch(`/delete_object/${modelName}/${objectId}/`, {
                 method: 'POST',
                 headers: {
                     'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
                 }
-            });
-        });
-
-        Promise.all(deletions)
-            .then(responses => {
-                if (responses.every(r => r.ok)) {
-                    alert('Selected items deleted successfully.');
-                    window.location.reload();
+            })
+            .then(response => {
+                if (response.ok) {
+                    deletedCount++;
+                    // If all selected items have been processed, reload the page
+                    if (deletedCount === selectedRows.length) {
+                        window.location.reload();
+                    }
                 } else {
-                    alert('Failed to delete some items.');
+                    console.error(`Failed to delete: ${modelName} ${objectId}`);
                 }
             });
+        });
     }
 }
 
