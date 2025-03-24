@@ -487,6 +487,18 @@ input[type="checkbox"]:checked {
   cursor: pointer;
 }
 
+#cancelButton {
+  background-color: #997a63;
+}
+
+#cancelButton:hover {
+  background-color: #876954;
+}
+
+#cancelButton .fas {
+  background-color: #997a63;
+}
+
 .action-buttons button:hover {
   background-color: #426b42;
 }

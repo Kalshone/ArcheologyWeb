@@ -141,7 +141,8 @@
                         {% endif %}
                         
                         {% if can_edit %}
-                            <button id="saveButton" onclick="saveSelected()" style="display:none;">Save Changes</button>
+                            <button id="saveButton" onclick="saveSelected()" style="display:none;"><i class="fas fa-save"></i>Save Changes</button>
+                            <button id="cancelButton" onclick="cancelEdit()" style="display:none;"><i class="fas fa-times"></i>Cancel</button>
                         {% endif %}
                     {% endif %}
                     </div>

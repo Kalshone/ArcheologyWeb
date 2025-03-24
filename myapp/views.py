@@ -235,15 +235,82 @@ from django.views.decorators.http import require_POST
 @csrf_exempt
 def update_object(request, model_name, object_id):
     try:
-        model = apps.get_model(app_label='myapp', model_name=model_name)
+        # Important: Use the exact model name as registered in Django
+        # If URL has "sites" but model is "Site", we need to handle this
+        model_name_exact = model_name.capitalize() if model_name.lower() != model_name else model_name
+        
+        # Debug logging
+        print(f"Trying to update {model_name_exact} with id {object_id}")
+        
+        model = apps.get_model(app_label='myapp', model_name=model_name_exact)
         obj = model.objects.get(pk=object_id)
+        
         data = json.loads(request.body)
+        updated_fields = []
+        
+        # Create mappings for field names with different variations
+        field_mapping = {}
+        for field in model._meta.fields:
+            # Map verbose_name, actual name, and lowercase versions
+            field_mapping[field.verbose_name.lower()] = field.name
+            field_mapping[field.name.lower()] = field.name
+            # Also map without spaces and special characters
+            clean_name = field.verbose_name.lower().replace(' ', '').replace('_', '')
+            field_mapping[clean_name] = field.name
+        
+        # Also add the primary key field with different variations
+        pk_field = model._meta.pk.name
+        field_mapping[pk_field.lower()] = pk_field
+        field_mapping['id'] = pk_field
+        field_mapping['pk'] = pk_field
+        
+        print(f"Field mapping: {field_mapping}")
+        
         for key, value in data.items():
-            field_name = key.replace('field', '')
-            setattr(obj, field_name, value)
-        obj.save()
-        return HttpResponse(json.dumps({'success': True}), content_type='application/json')
+            if key.startswith('field'):
+                # Extract the field name by removing 'field' prefix
+                field_name = key[5:].lower()  # Convert to lowercase for case-insensitive matching
+                field_name_clean = field_name.replace(' ', '').replace('_', '')
+                
+                print(f"Looking for field: {field_name}")
+                
+                # Find the matching field in the model using our mapping
+                actual_field_name = None
+                if field_name in field_mapping:
+                    actual_field_name = field_mapping[field_name]
+                elif field_name_clean in field_mapping:
+                    actual_field_name = field_mapping[field_name_clean]
+                
+                if actual_field_name:
+                    # Skip the primary key field if we're trying to update it
+                    if actual_field_name == pk_field:
+                        print(f"Skipping primary key field: {actual_field_name}")
+                        continue
+                    
+                    print(f"Matched field {field_name} to {actual_field_name}")
+                    setattr(obj, actual_field_name, value)
+                    updated_fields.append(actual_field_name)
+                else:
+                    print(f"Field not found: {field_name}")
+                    print(f"Available fields: {list(field_mapping.keys())}")
+        
+        if updated_fields:
+            obj.save(update_fields=updated_fields)
+            
+        return JsonResponse({
+            'success': True, 
+            'updated_fields': updated_fields,
+            'message': f'Updated {model_name} {object_id} successfully'
+        })
     except model.DoesNotExist:
-        return HttpResponse(json.dumps({'success': False, 'error': f'{model_name} not found'}), content_type='application/json')
+        print(f"Object not found: {model_name} {object_id}")
+        return JsonResponse({
+            'success': False, 
+            'error': f'Object {model_name} with ID {object_id} not found'
+        }, status=404)
     except Exception as e:
-        return HttpResponse(json.dumps({'success': False, 'error': str(e)}), content_type='application/json')
+        print(f"Error updating object: {str(e)}")
+        return JsonResponse({
+            'success': False, 
+            'error': str(e)
+        }, status=400)

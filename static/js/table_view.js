@@ -364,62 +364,114 @@ function toggleSelectAll(source) {
 
 function editSelected() {
     const selectedRows = document.querySelectorAll('.row-selector:checked');
+    if (selectedRows.length === 0) return;
+    
     selectedRows.forEach(checkbox => {
         const row = checkbox.closest('tr');
-        const cells = row.querySelectorAll('td');
+        const cells = row.querySelectorAll('td:not(:first-child)'); // Skip checkbox cell
+        
+        cells.forEach((cell, index) => {
+            const value = cell.textContent.trim();
+            cell.dataset.originalValue = value;
+            cell.innerHTML = `<input type="text" value="${value}" class="edit-field">`;
+        });
+    });
+    
+    // Toggle button visibility
+    document.getElementById('editButton').style.display = 'none';
+    document.getElementById('deleteButton').style.display = 'none';
+    document.getElementById('saveButton').style.display = 'inline';
+    document.getElementById('cancelButton').style.display = 'inline';
+}
+
+function saveSelected() {
+    const selectedRows = document.querySelectorAll('.row-selector:checked');
+    if (selectedRows.length === 0) return;
+    
+    let successCount = 0;
+    let failCount = 0;
+    const totalRows = selectedRows.length;
+    
+    selectedRows.forEach(checkbox => {
+        const row = checkbox.closest('tr');
+        // Important: Convert model name to match the URL pattern (capitalized)
+        const modelName = row.dataset.modelName;
+        const objectId = row.dataset.objectId;
+        const data = {};
+        
+        // Get header cells for field names
+        const headers = document.querySelectorAll('thead th:not(:first-child)');
+        
+        cells = row.querySelectorAll('td:not(:first-child)');
+        cells.forEach((cell, index) => {
+            const input = cell.querySelector('input.edit-field');
+            if (input) {
+                const fieldName = headers[index].querySelector('span').textContent.trim();
+                data['field' + fieldName] = input.value;
+            }
+        });
+
+        if (Object.keys(data).length > 0) {
+            fetch(`/update_object/${modelName}/${objectId}/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Failed to update ${modelName} ${objectId}: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                successCount++;
+                checkCompletion();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                failCount++;
+                alert(`Error updating record: ${error.message}`);
+                checkCompletion();
+            });
+        }
+    });
+    
+    function checkCompletion() {
+        if (successCount + failCount === totalRows) {
+            if (failCount === 0) {
+                alert('All records updated successfully!');
+                window.location.reload(); // Only reload if all updates succeeded
+            } else {
+                alert(`${successCount} records updated, ${failCount} failed. Check console for details.`);
+            }
+        }
+    }
+}
+
+function cancelEdit() {
+    const selectedRows = document.querySelectorAll('.row-selector:checked');
+    if (selectedRows.length === 0) return;
+    
+    selectedRows.forEach(checkbox => {
+        const row = checkbox.closest('tr');
+        const cells = row.querySelectorAll('td:not(:first-child)'); // Skip checkbox cell
+        
         cells.forEach(cell => {
-            if (!cell.querySelector('input')) {
-                const value = cell.textContent;
-                cell.dataset.originalValue = value;
-                cell.innerHTML = `<input type="text" value="${value}">`;
+            if (cell.dataset.originalValue) {
+                cell.innerHTML = cell.dataset.originalValue;
+                delete cell.dataset.originalValue;
             }
         });
     });
     
-    document.getElementById('editButton').style.display = 'none';
-    document.getElementById('deleteButton').style.display = 'none';
-    document.getElementById('saveButton').style.display = 'inline';
-}
-
-function saveChanges() {
-    const selectedRows = document.querySelectorAll('.row-selector:checked');
-    const updates = [];
-    
-    selectedRows.forEach(checkbox => {
-        const row = checkbox.closest('tr');
-        const inputs = row.querySelectorAll('input[type="text"]');
-        const data = {};
-        
-        inputs.forEach(input => {
-            const fieldName = input.closest('td').dataset.field;
-            data[fieldName] = input.value;
-        });
-        
-        updates.push({
-            modelName: row.dataset.modelName,
-            objectId: row.dataset.objectId,
-            data: data
-        });
-    });
-
-    Promise.all(updates.map(update => 
-        fetch(`/update_object/${update.modelName}/${update.objectId}/`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
-            },
-            body: JSON.stringify(update.data),
-        })
-    ))
-    .then(responses => {
-        if (responses.every(r => r.ok)) {
-            alert('Changes saved successfully.');
-            window.location.reload();
-        } else {
-            alert('Failed to save some changes.');
-        }
-    });
+    // Reset button visibility
+    document.getElementById('editButton').style.display = 'inline';
+    document.getElementById('deleteButton').style.display = 'inline';
+    document.getElementById('saveButton').style.display = 'none';
+    document.getElementById('cancelButton').style.display = 'none';
 }
 
 function deleteSelected() {
@@ -460,9 +512,10 @@ function updateButtonStates() {
     const editButton = document.getElementById('editButton');
     const deleteButton = document.getElementById('deleteButton');
     const saveButton = document.getElementById('saveButton');
+    const cancelButton = document.getElementById('cancelButton');
     
-    editButton.disabled = selectedRows === 0;
-    deleteButton.disabled = selectedRows === 0;
+    // editButton.disabled = selectedRows === 0;
+    // deleteButton.disabled = selectedRows === 0;
 
     document.querySelectorAll('.row-selector').forEach(checkbox => {
         const row = checkbox.closest('tr');

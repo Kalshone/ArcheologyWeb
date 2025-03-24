@@ -31,7 +31,7 @@ urlpatterns = [
     path('<str:model_name>/', views.table_view, name='table_view'),
     
     path('delete_object/<str:model_name>/<str:object_id>/', views.delete_object, name='delete_object'),
-    path('update_object/<str:model_name>/<int:object_id>/', views.update_object, name='update_object'), 
+    path('update_object/<str:model_name>/<str:object_id>/', views.update_object, name='update_object'),
     
     path("accounts/", include("django.contrib.auth.urls")),
     
