@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.db.utils import IntegrityError
-from .models import Site
+from .models import Site, Sites, Areas, Artifacts
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import redirect, get_object_or_404
 from django.apps import apps
@@ -24,7 +24,7 @@ def is_admin(user):
 @user_passes_test(is_admin)
 def manage_editor_permissions(request):
     editors = User.objects.filter(groups__name='Editor')
-    tables = ['Site']  # Add your table names here
+    tables = ['Sites']  # Add your table names here
     
     if request.method == 'POST':
         editor_id = request.POST.get('editor')
@@ -85,13 +85,24 @@ def login(request):
 
 def dashboard(request):
     """Guest access allowed - read-only"""
-    sites = Site.objects.all()
+    # Count actual data from the Sites model
+    sites_count = Sites.objects.count()
+    areas_count = Areas.objects.count()
+    artifacts_count = Artifacts.objects.count()
+    
+    # Get the most recently modified site (if any exist)
+    recent_site = Sites.objects.order_by('siteNo').first()
+    
     can_edit = request.user.is_authenticated and (
         request.user.is_superuser or 
         request.user.groups.filter(name='Editor').exists()
     )
+    
     return render(request, 'home.html', {
-        'sites': sites,
+        'sites_count': sites_count,
+        'areas_count': areas_count,
+        'artifacts_count': artifacts_count,
+        'recent_site': recent_site,
         'can_edit': can_edit
     })
 

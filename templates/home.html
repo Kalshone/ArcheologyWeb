@@ -132,53 +132,54 @@
         <!-- Main Content -->
         <div class="main-content">
           <div class="stats-container"> 
-              <div class="stats">
-                  <div class="stat-card">
-                      <div class="stat-values">
-                          <h3>Total Sites</h3>
-                          <h1>123</h1>
-                      </div>
-                      <i class="fas fa-map"></i>
+            <div class="stats">
+              <div class="stat-card">
+                  <div class="stat-values">
+                      <h3>Total Sites</h3>
+                      <h1>{{ sites_count }}</h1>
                   </div>
-                  <div class="stat-card">
-                      <div class="stat-values">
-                          <h3>Total Areas</h3>
-                          <h1>45</h1>
-                      </div>
-                      <i class="fas fa-layer-group"></i>
-                  </div>
-                  <div class="stat-card">
-                      <div class="stat-values">
-                          <h3>Total Artifacts</h3>
-                          <h1>678</h1>
-                      </div>
-                      <i class="fas fa-archive"></i>
-                  </div>
+                  <i class="fas fa-map"></i>
               </div>
+              <div class="stat-card">
+                  <div class="stat-values">
+                      <h3>Total Areas</h3>
+                      <h1>{{ areas_count }}</h1>
+                  </div>
+                  <i class="fas fa-layer-group"></i>
+              </div>
+              <div class="stat-card">
+                  <div class="stat-values">
+                      <h3>Total Artifacts</h3>
+                      <h1>{{ artifacts_count }}</h1>
+                  </div>
+                  <i class="fas fa-archive"></i>
+              </div>
+            </div>
           </div> 
 
-          <!-- New Container for Additional Information -->
           <div class="info-container">
             <div class="info-card">
-                <div class="stat-values">
-                    <h3>Artifact of the Day</h3>
-                    <p>Artifact Name: Ancient Vase</p>
-                    <p>Description: A beautifully crafted vase from the 5th century BC.</p>
-                    <p>Location: Greece</p>
-                </div>
-                <div class="artifact-photo">
-                    <img src="{% static 'images/ancient_vase.jpeg' %}" alt="Ancient Vase" class="resized-image">
-                </div>
+              <div class="stat-values">
+                <h3>Featured Site</h3>
+                {% if recent_site %}
+                    <p>Site Number: {{ recent_site.siteNo }}</p>
+                    <p>Name: {{ recent_site.name }}</p>
+                    <p>Type: {{ recent_site.get_type_display }}</p>
+                    <p>Terrain: {{ recent_site.get_terrain_display }}</p>
+                {% else %}
+                    <p>No sites available</p>
+                {% endif %}
+              </div>
             </div>
 
             <div class="info-card">
-                <div class="stat-values">
-                    <h3>Recent Activity</h3>
-                    <p>Added a new site - 2 hours ago</p>
-                    <p>Added a new area - 3 hours ago</p>
-                    <p>Added a new artifact - 4 hours ago</p>
-                </div>
-                <i class="fas fa-history"></i>
+              <div class="stat-values">
+                <h3>System Information</h3>
+                <p>Database: SQLite</p>
+                <p>Django Version: 5.1.3</p>
+                <p>User Accounts: {{ user_count|default:"0" }}</p>
+              </div>
+              <i class="fas fa-server"></i>
             </div>
 
             <div class="info-container">
