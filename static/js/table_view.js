@@ -42,6 +42,41 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+// SEARCHBAR
+function searchTable() {
+    const input = document.getElementById('searchInput');
+    const filter = input.value.toLowerCase();
+    const table = document.getElementById('example');
+    const rows = table.getElementsByTagName('tr');
+  
+    // Loop through all table rows (skip header row)
+    for (let i = 1; i < rows.length; i++) {
+      let row = rows[i];
+      let shouldShow = false;
+      
+      // Skip header/footer rows
+      if (row.parentNode.tagName === 'THEAD' || row.parentNode.tagName === 'TFOOT') {
+        continue;
+      }
+      
+      // Check all cells in the row
+      const cells = row.getElementsByTagName('td');
+      for (let j = 0; j < cells.length; j++) {
+        const cell = cells[j];
+        if (cell) {
+          const textValue = cell.textContent || cell.innerText;
+          if (textValue.toLowerCase().indexOf(filter) > -1) {
+            shouldShow = true;
+            break;
+          }
+        }
+      }
+      
+      // Show/hide the row based on search match
+      row.style.display = shouldShow ? '' : 'none';
+    }
+  }
+
 document.addEventListener('DOMContentLoaded', function() {
     // Create tooltip element
     const tooltip = document.createElement('div');
