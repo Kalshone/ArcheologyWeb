@@ -33,8 +33,17 @@ class SiteType(models.TextChoices):
     INDUSTRIAL = 'IS', 'Industrial Site'
     ROCK_ART = 'RA', 'Rock Art Site'
     UNDERWATER = 'UW', 'Underwater Site'
+    LITHIC_SCATTER = 'LS', 'Lithic Scatter'
+    SHERD_SCATTER = 'SS', 'Sherd Scatter'
+    CEMETERY = 'CE', 'Cemetery'
+    TOMB = 'TB', 'Tomb or Cemetery'
+    KHIRBAH = 'KH', 'Khirbah'
 
 class TerrainType(models.TextChoices):
+    HILL = 'HL', 'Hill'
+    SLOPE = 'SL', 'Slope'
+    RIDGE = 'RD', 'Ridge'
+    VALLEY = 'VL', 'Valley'
     COASTAL = 'CO', 'Coastal'
     DESERT = 'DE', 'Desert'
     FOREST = 'FO', 'Forest'
@@ -51,6 +60,8 @@ class ConditionType(models.TextChoices):
     FAIR = 'FR', 'Fair Condition'
     GOOD = 'GD', 'Good Condition'
     INTACT = 'IN', 'Fully Intact'
+    PASTURE = 'PS', 'Pasture'
+    PLOWED_FIELD = 'PF', 'Plowed field'
 
 class VisibilityType(models.TextChoices):
     NOT_VISIBLE = 'NV', 'Not Visible'
@@ -59,12 +70,20 @@ class VisibilityType(models.TextChoices):
     GOOD = 'GD', 'Good (50-75%)'
     EXCELLENT = 'EX', 'Excellent (>75%)'
 
+    BARE_ROCK = 'BR', 'Bare Rock'
+    CULTIVATED = 'CU', 'Cultivated'
+    BARE_ROCK_CULT = 'BC', 'Bare rock, cult.'
+    REGULAR = 'RG', 'Regular'
+
+# LOCI DROPDOWNS
 class LociType(models.TextChoices):
-    SEDIMENT = 'SD', 'Sediment'
-    WALL = 'WL', 'Wall'
-    FEATURE = 'FT', 'Feature'
-    FLOOR = 'FL', 'Floor'
-    HEARTH = 'HT', 'Hearth'
+    SOIL = 'SL', 'Soil'
+    SURFACE = 'SF', 'Surface'
+    COLLAPSE = 'CL', 'Collapse'
+    PIT_FILL = 'PF', 'Pit fill'
+    WALL_STONE = 'WS', 'Wall/Stone feature'
+    VIRGIN_SOIL = 'VS', 'Virgin Soil'
+    BAULK_TRIM = 'BT', 'Baulk trim'
     OTHER = 'OT', 'Other'
 
 class TextureType(models.TextChoices):
@@ -449,33 +468,35 @@ class LoanStatusType(models.TextChoices):
 # PROVINENCE MODEL CLASSES
 class Sites(models.Model):
     siteNo = models.CharField(max_length=20, primary_key=True)
-    name = models.CharField(max_length=100)
-    latitude = models.DecimalField(max_digits=6, decimal_places=4)
-    longitude = models.DecimalField(max_digits=7, decimal_places=4)
+    name = models.CharField(max_length=100, blank=True, null=True)
+    latitude = models.DecimalField(max_digits=6, decimal_places=4, null=True, blank=True)
+    longitude = models.DecimalField(max_digits=7, decimal_places=4, null=True, blank=True)
     length = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     width = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     type = models.CharField(
         max_length=2,
         choices=SiteType.choices,
-        null=False,
-        blank=False
+        null=True, 
+        blank=True
     )
     terrain = models.CharField(
         max_length=2,
         choices=TerrainType.choices,
-        null=False,
-        blank=False
+        null=True,
+        blank=True
     )
     condition = models.CharField(
         max_length=2,
         choices=ConditionType.choices,
-        default=ConditionType.FAIR
+        null=True,
+        blank=True
     )
-    stratification = models.PositiveIntegerField(null=True, blank=True)
+    stratification = models.CharField(max_length=50, null=True, blank=True)
     surfaceVisibility = models.CharField(
         max_length=2,
         choices=VisibilityType.choices,
-        default=VisibilityType.FAIR
+        null=True,
+        blank=True
     )
     elevation = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
     comments = models.TextField(blank=True)

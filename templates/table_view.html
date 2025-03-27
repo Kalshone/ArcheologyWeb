@@ -127,6 +127,9 @@
                 <div class="action-buttons">
                     <div class="left-buttons">
                     <button onclick="exportTable()"><i class="fas fa-download"></i>Export</button>
+                    {% if can_add %}
+                    <button onclick="openImportModal()"><i class="fas fa-upload"></i>Import</button>
+                    {% endif %}
                     {% if user.is_authenticated %}
                         {% if can_edit %}
                             <button id="editButton" onclick="editSelected()" enabled><i class="fas fa-edit"></i>Edit Selected</button>
@@ -253,6 +256,49 @@
                     <button type="button" onclick="closeAddForm()" class="cancel-button">Cancel</button>
                 </div>
                 </form>
+            </div>
+            
+            <!-- Import Modal -->
+            <div id="importModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Import Data</h2>
+                        <span class="close" onclick="closeImportModal()">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <p>Upload a CSV file to import data. The first row should contain column headers matching the field names.</p>
+                        <p>Download a <a href="#" onclick="exportTemplate(); return false;">template CSV</a> with the correct headers.</p>
+                        
+                        <form id="importForm" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="csvFile">Select CSV File:</label>
+                                <input type="file" id="csvFile" name="csvFile" accept=".csv" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="importMode">Import Mode:</label>
+                                <select id="importMode" name="importMode" class="form-input">
+                                    <option value="create">Create new records only</option>
+                                    <option value="update">Update existing records only</option>
+                                    <option value="both">Create and update records</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" id="headerRow" name="headerRow" checked>
+                                    File includes a header row
+                                </label>
+                            </div>
+                            
+                            <div class="modal-footer">
+                                <button type="button" onclick="closeImportModal()" class="cancel-button">Cancel</button>
+                                <button type="submit" class="submit-button">Import</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
             
             <!-- Table -->

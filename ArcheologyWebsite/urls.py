@@ -24,17 +24,17 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
     path('login/', views.login, name='login'),
     path("signup/", views.signup, name="signup"),
-    # path('', include('myapp.urls')),
-    
+
     path('manage-permissions/', views.manage_editor_permissions, name='manage_permissions'),
     
-    path('<str:model_name>/', views.table_view, name='table_view'),
+    path('export_table/<str:model_name>/', views.export_table, name='export_table'),
+    path('export_template/<str:model_name>/', views.export_template, name='export_template'),
+    path('import_csv/', views.import_csv, name='import_csv'),
     
     path('delete_object/<str:model_name>/<str:object_id>/', views.delete_object, name='delete_object'),
     path('update_object/<str:model_name>/<str:object_id>/', views.update_object, name='update_object'),
     
     path("accounts/", include("django.contrib.auth.urls")),
     
-
-    # path("accounts/", include("accounts.urls")),
+    path('<str:model_name>/', views.table_view, name='table_view'),
 ]

@@ -1,3 +1,162 @@
+// IMPORT
+function openImportModal() {
+    const modal = document.getElementById('importModal');
+    modal.style.display = 'block';
+}
+
+function closeImportModal() {
+    const modal = document.getElementById('importModal');
+    if (modal) {
+        modal.style.display = 'none';
+        // Reset the form
+        document.getElementById('importForm').reset();
+    }
+}
+
+// Close modal if user clicks outside of it
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById('importModal');
+    if (event.target === modal) {
+        closeImportModal();
+    }
+});
+
+// Export template CSV for import
+function exportTemplate() {
+    const modelName = document.querySelector('h1').textContent.trim();
+    
+    // Create a form to submit the POST request
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = `/export_template/${modelName}/`;
+    
+    // Add CSRF token
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const csrfInput = document.createElement('input');
+    csrfInput.type = 'hidden';
+    csrfInput.name = 'csrfmiddlewaretoken';
+    csrfInput.value = csrfToken;
+    form.appendChild(csrfInput);
+    
+    // Add to document, submit and remove
+    document.body.appendChild(form);
+    form.submit();
+    document.body.removeChild(form);
+}
+
+// Handle form submission for import
+document.addEventListener('DOMContentLoaded', function() {
+    window.addEventListener('click', function(event) {
+        const modal = document.getElementById('importModal');
+        if (event.target === modal) {
+            closeImportModal();
+        }
+    });
+    
+    // Make sure the import button is properly connected
+    const importButton = document.querySelector('button[onclick="openImportModal()"]');
+    if (importButton) {
+        importButton.onclick = function(e) {
+            e.preventDefault();
+            openImportModal();
+        };
+    }
+
+    const importForm = document.getElementById('importForm');
+    if (importForm) {
+        importForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const fileInput = document.getElementById('csvFile');
+            if (!fileInput.files.length) {
+                alert('Please select a CSV file to import.');
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            if (file.type !== 'text/csv' && !file.name.endsWith('.csv')) {
+                alert('Please select a valid CSV file.');
+                return;
+            }
+            
+            const modelName = document.querySelector('h1').textContent.trim();
+            const formData = new FormData(this);
+            formData.append('model_name', modelName);
+            
+            // Show loading state
+            const submitButton = importForm.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Importing...';
+            
+            fetch('/import_csv/', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Reset button state
+                submitButton.disabled = false;
+                submitButton.innerHTML = 'Import';
+                
+                if (data.success) {
+                    alert(`Import completed: ${data.created} records created, ${data.updated} records updated, ${data.errors} errors.`);
+                    closeImportModal();
+                    
+                    // Reload page to show new data
+                    window.location.reload();
+                } else {
+                    alert(`Error: ${data.error}`);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred during import.');
+                
+                // Reset button state
+                submitButton.disabled = false;
+                submitButton.innerHTML = 'Import';
+            });
+        });
+    }
+});
+
+// EXPORT
+function exportTable() {
+    // Get current table model name
+    const modelName = document.querySelector('h1').textContent.trim();
+    
+    // Create a form to submit the POST request
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = `/export_table/${modelName}/`;
+    
+    // Add CSRF token
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const csrfInput = document.createElement('input');
+    csrfInput.type = 'hidden';
+    csrfInput.name = 'csrfmiddlewaretoken';
+    csrfInput.value = csrfToken;
+    form.appendChild(csrfInput);
+    
+    // Get current filter/search state
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput && searchInput.value) {
+        const searchFilter = document.createElement('input');
+        searchFilter.type = 'hidden';
+        searchFilter.name = 'search_filter';
+        searchFilter.value = searchInput.value;
+        form.appendChild(searchFilter);
+    }
+    
+    // Add to document, submit and remove
+    document.body.appendChild(form);
+    form.submit();
+    document.body.removeChild(form);
+}
+
 // ADD FORM
 function openAddForm() {
     const formContainer = document.getElementById('addFormContainer');
@@ -13,15 +172,30 @@ function closeAddForm() {
     formContainer.style.display = 'none';
 }
 
-// ADD FORM SUBMISSION
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('addForm').addEventListener('submit', function(e) {
         e.preventDefault();
         const formData = new FormData(this);
         
+        // Process form data before sending
+        const processedData = new FormData();
+        
+        // Copy all non-empty fields from the original formData
+        for (let [key, value] of formData.entries()) {
+            // Only include the field if it's not an empty string for number inputs
+            const input = document.querySelector(`#addForm [name="${key}"]`);
+            if (input && input.type === "number" && value === "") {
+                // Skip empty number fields to let them default to NULL
+                continue;
+            }
+            
+            // Include all other fields
+            processedData.append(key, value);
+        }
+        
         fetch('', {
             method: 'POST',
-            body: formData,
+            body: processedData,
             headers: {
                 'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
             }
