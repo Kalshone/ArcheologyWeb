@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import Http404, HttpResponse
 from django.db.utils import IntegrityError
 from .models import Site, Sites, Areas, Artifacts
 from django.contrib.auth.forms import UserCreationForm
@@ -132,9 +132,18 @@ def dashboard(request):
 
 
 def table_view(request, model_name):
-    model = apps.get_model(app_label='myapp', model_name=model_name)
+    if 'icon' in model_name.lower() or model_name.lower() == 'favicon.ico':
+        return HttpResponse(status=204)  # Return empty response
+    try:
+        model = apps.get_model(app_label='myapp', model_name=model_name)
+    except LookupError:
+        raise Http404(f"Model '{model_name}' does not exist")
+    
     pk_field = model._meta.pk.name
     objects = model.objects.all().order_by(pk_field)
+    
+    page_size = int(request.GET.get('size', 10))
+    page_size = min(max(page_size, 10), 100)
     
     can_add = False
     can_edit = False
@@ -157,7 +166,7 @@ def table_view(request, model_name):
             except EditorTablePermission.DoesNotExist:
                 pass
             
-    paginator = Paginator(objects, 10)  # Show 10 items per page
+    paginator = Paginator(objects, page_size)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
@@ -216,6 +225,7 @@ def table_view(request, model_name):
         'page_obj': page_obj,
         'is_editor': request.user.is_authenticated and request.user.groups.filter(name='Editor').exists(),
         'is_admin': request.user.is_authenticated and request.user.is_superuser,
+        'page_size': page_size,
     })
     
 @csrf_exempt

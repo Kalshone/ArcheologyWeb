@@ -513,7 +513,7 @@ input[type="checkbox"]:checked {
   border: 1px solid #e0e0e0;
   border-radius: 5px;
   font-size: 14px;
-  width: 200px;
+  width: 300px;
 }
 
 .action-buttons .fa-sync {
@@ -797,6 +797,47 @@ select.form-input.placeholder {
     background-color: #f5f0eb;
 }
 
+/* Pagination dropdown */
+.page-size-selector {
+  /* Use the same styling as form dropdowns */
+  height: 36px;
+  padding: 8px 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #4f3c1f;
+  background-color: #fbf9f6;
+  margin-left: 10px;
+  cursor: pointer;
+  
+  /* Fixed width instead of stretching */
+  width: auto;
+  min-width: 70px;
+  
+  /* Dropdown arrow styling like form selects */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234f3c1f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 12px;
+  padding-right: 30px;
+  
+  /* Match form styling on focus/hover */
+  box-shadow: 0 2px 6px rgba(180, 180, 180, 0.1);
+}
+
+.page-size-selector:focus {
+  outline: none;
+  border-color: #5a7d5a;
+  background-color: #ffffff;
+}
+
+.page-size-selector:hover {
+  background-color: #ffffff;
+}
+
 .pagination .fas {
     font-size: 12px;
     background: none;
@@ -817,3 +858,4 @@ select.form-input.placeholder {
   max-width: 250px;
   word-wrap: break-word;
 }
+
