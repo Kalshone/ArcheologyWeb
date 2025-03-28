@@ -212,6 +212,8 @@ def table_view(request, model_name):
         if field.__class__.__name__ == 'ForeignKey':
             related_model = field.remote_field.model
             field_info['related_objects'] = related_model.objects.all()
+        if field.choices:
+            field_info['choices'] = [{'value': choice[0], 'display': f"{choice[0]}, {choice[1]}"} for choice in field.choices]
         
         headers.append(field_info)
     

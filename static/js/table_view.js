@@ -157,6 +157,79 @@ function exportTable() {
     document.body.removeChild(form);
 }
 
+// OPTIONS SETTINGS
+document.addEventListener('DOMContentLoaded', function() {
+    // Get saved preference from localStorage
+    const showLongValues = localStorage.getItem('showLongDropdownValues') === 'true';
+    
+    // Set initial checkbox state
+    const longValuesCheckbox = document.getElementById('showLongDropdownValues');
+    if (longValuesCheckbox) {
+        longValuesCheckbox.checked = showLongValues;
+        
+        // Apply current setting
+        updateDropdownDisplayValues(showLongValues);
+        
+        // Add change event listener
+        longValuesCheckbox.addEventListener('change', function(e) {
+            e.stopPropagation(); // Prevent dropdown from closing
+            localStorage.setItem('showLongDropdownValues', this.checked);
+            updateDropdownDisplayValues(this.checked);
+        });
+    }
+    
+    // Handle options dropdown toggle
+    const optionsButton = document.getElementById('optionsButton');
+    const optionsDropdown = document.querySelector('.options-dropdown');
+    
+    if (optionsButton && optionsDropdown) {
+        optionsButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            optionsDropdown.classList.toggle('active');
+        });
+        
+        // Close when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!optionsButton.contains(e.target) && !optionsDropdown.contains(e.target)) {
+                optionsDropdown.classList.remove('active');
+            }
+        });
+    }
+});
+
+function updateDropdownDisplayValues(showLong) {
+    // Update dropdowns in forms
+    document.querySelectorAll('select.form-input option').forEach(option => {
+        // Skip empty options
+        if (option.value === '') return;
+        
+        // Handle options with data attributes
+        if (option.hasAttribute('data-long') && option.hasAttribute('data-short')) {
+            option.text = showLong ? option.getAttribute('data-long') : option.getAttribute('data-short');
+        }
+        // Handle comma-separated format (like "ST, Settlement")
+        else if (option.text.includes(', ')) {
+            const parts = option.text.split(', ');
+            if (parts.length === 2) {
+                option.setAttribute('data-short', parts[0]);
+                option.setAttribute('data-long', parts[1]);
+                option.text = showLong ? parts[1] : parts[0];
+            }
+        }
+    });
+    
+    // Update table cells with choice values
+    document.querySelectorAll('.table tbody td[data-full-text]').forEach(cell => {
+        const fullText = cell.getAttribute('data-full-text');
+        if (fullText && fullText.includes(', ')) {
+            const parts = fullText.split(', ');
+            if (parts.length === 2) {
+                cell.textContent = showLong ? parts[1] : parts[0];
+            }
+        }
+    });
+}
+
 // ADD FORM
 function openAddForm() {
     const formContainer = document.getElementById('addFormContainer');

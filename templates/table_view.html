@@ -153,7 +153,6 @@
                         <div class="dropdown column-toggle-dropdown">
                             <a href="#" class="dropdown-trigger">
                                 <button id="toggleButton"><i class="fas fa-grip-vertical"></i></button>
-                                <!-- <i class="fas fa-grip-vertical"></i> -->
                             </a>
                             <div class="dropdown-content">
                                 {% for header in headers %}
@@ -162,6 +161,18 @@
                                         {{ header.verbose_name }}
                                     </a>
                                 {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="dropdown options-dropdown">
+                            <a href="#" class="dropdown-trigger">
+                                <button id="optionsButton"><i class="fas fa-cog"></i></button>
+                            </a>
+                            <div class="dropdown-content">
+                                <a href="#">
+                                    <input type="checkbox" id="showLongDropdownValues"> 
+                                    Show full dropdown values
+                                </a>
                             </div>
                         </div>
 

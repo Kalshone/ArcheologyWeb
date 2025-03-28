@@ -859,3 +859,17 @@ select.form-input.placeholder {
   word-wrap: break-word;
 }
 
+.options-dropdown {
+  position: relative;
+}
+
+.options-dropdown .dropdown-content {
+  min-width: 180px;
+  right: 0;
+  left: auto;
+}
+
+.right-buttons .dropdown {
+  margin-left: 5px;
+}
+
