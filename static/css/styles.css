@@ -873,3 +873,19 @@ select.form-input.placeholder {
   margin-left: 5px;
 }
 
+
+.form-group label:after {
+  content: "*";
+  color: #c45b5b;
+  margin-left: 3px;
+  display: none;
+}
+
+.form-group:has(.form-input[required]) label:after {
+  display: inline;
+}
+
+.form-group:has(input[name$="No"]) label:after,
+.form-group:has(select[name$="No"]) label:after {
+  display: inline;
+}

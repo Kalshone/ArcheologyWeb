@@ -246,6 +246,26 @@ function closeAddForm() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+    const addForm = document.getElementById('addForm');
+    if (addForm) {
+        // Find all primary key and foreign key inputs
+        const pkFields = addForm.querySelectorAll('input[name$="No"], select[name$="No"]');
+        const fkFields = addForm.querySelectorAll('select[id$="No"]');
+        
+        // Add required class to their parent form-group
+        pkFields.forEach(field => {
+            if (!field.hasAttribute('required')) {
+                field.setAttribute('required', '');
+            }
+        });
+        
+        fkFields.forEach(field => {
+            if (!field.hasAttribute('required')) {
+                field.setAttribute('required', '');
+            }
+        });
+    }
+
     document.getElementById('addForm').addEventListener('submit', function(e) {
         e.preventDefault();
         const formData = new FormData(this);
