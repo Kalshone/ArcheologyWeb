@@ -13,171 +13,194 @@
   <!-- Sidebar -->
   <div class="sidebar">
     <div>
-      <div class="logo">U OF T ARCHEOLOGY<hr></div>
-      
-      <a href="{% url 'dashboard' %}" class="current-page">
+    <!-- <h1 class="logo">U OF T ARCHEOLOGY</h1> -->
+
+    <img src="{% static 'images/uoft-logo.png' %}" alt="U of T Logo" class="logo">
+
+
+
+    
+    <!-- Dashboard -->
+    <a href="{% url 'dashboard' %}" class="current-page">
         <i class="fas fa-tachometer-alt"></i>Dashboard
-      </a>
-      
-      <!-- Provenience -->
-      <div class="dropdown">
+    </a>
+    
+    <!-- Provenience -->
+    <div class="dropdown">
         <a href="#" class="dropdown-trigger">
-          <i class="fas fa-map-marked-alt"></i>Provenience
-          <i class="fas fa-chevron-right"></i>
+            <i class="fas fa-map-marked-alt"></i></i>Provenience
+            <i class="fas fa-chevron-right"></i>
         </a>
         <div class="dropdown-content">
-          {% comment %} <a href="{% url 'sites' %}"><i class="fas fa-map"></i>Sites</a> {% endcomment %}
-          <a href="{% url 'table_view' model_name='Sites' %}"><i class="fas fa-map"></i>Sites</a>
-          <a href="#"><i class="fas fa-layer-group"></i>Areas</a>
-          <a href="#"><i class="fas fa-th"></i>Loci</a>
-          <a href="#"><i class="fas fa-shopping-bag"></i>Bags</a>
-          <a href="#"><i class="fas fa-box"></i>Artifacts</a>
+            <a href="{% url 'table_view' model_name='Sites' %}"><i class="fas fa-map"></i>Sites</a>
+            <a href="{% url 'table_view' model_name='Sites' %}"><i class="fas fa-layer-group"></i>Areas</a>
+            <a href="{% url 'table_view' model_name='Sites' %}"><i class="fas fa-th"></i>Loci</a>
+            <a href="{% url 'table_view' model_name='Sites' %}"><i class="fas fa-shopping-bag"></i>Bags</a>
+            <a href="{% url 'table_view' model_name='Sites' %}"><i class="fas fa-box"></i>Artifacts</a>
         </div>
-      </div>
+    </div>
 
-      <!-- Ceramics -->
-      <div class="dropdown">
+    <!-- Ceramics -->
+    <div class="dropdown">
         <a href="#" class="dropdown-trigger">
-          <i class="fas fa-mortar-pestle"></i>Ceramics
-          <i class="fas fa-chevron-right"></i>
+        <i class="fas fa-mortar-pestle"></i>Ceramics
+        <i class="fas fa-chevron-right"></i>
         </a>
         <div class="dropdown-content">
-          <a href="#"><i class="fas fa-cube"></i>Pottery Main</a>
-          <a href="#"><i class="fas fa-circle"></i>Rims</a>
-          <a href="#"><i class="fas fa-square"></i>Bases</a>
-          <a href="#"><i class="fas fa-grip-lines"></i>Handles</a>
+        <a href="{% url 'table_view' model_name='Sites' %}"><i class="fas fa-cube"></i>Pottery Main</a>
+        <a href="{% url 'table_view' model_name='Sites' %}"><i class="fas fa-circle"></i>Rims</a>
+        <a href="{% url 'table_view' model_name='Sites' %}"><i class="fas fa-square"></i>Bases</a>
+        <a href="{% url 'table_view' model_name='Sites' %}"><i class="fas fa-grip-lines"></i>Handles</a>
         </div>
-      </div>
+    </div>
 
-      <!-- Lithics -->
-      <div class="dropdown">
+    <!-- Lithics -->
+    <div class="dropdown">
         <a href="#" class="dropdown-trigger">
-          <i class="fas fa-gem"></i>Lithics
-          <i class="fas fa-chevron-right"></i>
+        <i class="fas fa-gem"></i>Lithics
+        <i class="fas fa-chevron-right"></i>
         </a>
         <div class="dropdown-content">
-          <a href="#"><i class="fas fa-circle"></i>Cores</a>
-          <a href="#"><i class="fas fa-cut"></i>Blade/Flake Tools</a>
-          <a href="#"><i class="fas fa-shapes"></i>Debitage</a>
+        <a href="{% url 'table_view' model_name='Sites' %}"><i class="fas fa-circle"></i>Cores</a>
+        <a href="{% url 'table_view' model_name='Sites' %}"><i class="fas fa-cut"></i>Blade/Flake Tools</a>
+        <a href="{% url 'table_view' model_name='Sites' %}"><i class="fas fa-shapes"></i>Debitage</a>
         </div>
-      </div>
+    </div>
 
-      <!-- Metals & Glass -->
-      <div class="dropdown">
+    <!-- Metals & Glass -->
+    <div class="dropdown">
         <a href="#" class="dropdown-trigger">
-          <i class="fas fa-coins"></i>Metals & Glass
-          <i class="fas fa-chevron-right"></i>
+        <i class="fas fa-coins"></i>Metals & Glass
+        <i class="fas fa-chevron-right"></i>
         </a>
         <div class="dropdown-content">
-          <a href="#"><i class="fas fa-hammer"></i>Metal Objects</a>
-          <a href="#"><i class="fas fa-wine-glass"></i>Glass</a>
-          <a href="#"><i class="fas fa-star"></i>Special Finds</a>
+        <a href="{% url 'table_view' model_name='Sites' %}"><i class="fas fa-hammer"></i>Metal Objects</a>
+        <a href="{% url 'table_view' model_name='Sites' %}"><i class="fas fa-wine-glass"></i>Glass</a>
+        <a href="{% url 'table_view' model_name='Sites' %}"><i class="fas fa-star"></i>Special Finds</a>
         </div>
-      </div>
+    </div>
 
-      <!-- Organics -->
-      <div class="dropdown">
+    <!-- Organics -->
+    <div class="dropdown">
         <a href="#" class="dropdown-trigger">
-          <i class="fas fa-bone"></i>Organics
-          <i class="fas fa-chevron-right"></i>
+        <i class="fas fa-bone"></i>Organics
+        <i class="fas fa-chevron-right"></i>
         </a>
         <div class="dropdown-content">
-          <a href="#"><i class="fas fa-skull"></i>Osteology</a>
-          <a href="#"><i class="fas fa-tools"></i>Worked Bone</a>
+        <a href="{% url 'table_view' model_name='Sites' %}"><i class="fas fa-skull"></i>Osteology</a>
+        <a href="{% url 'table_view' model_name='Sites' %}"><i class="fas fa-tools"></i>Worked Bone</a>
         </div>
-      </div>
+    </div>
 
-      <!-- Documentation -->
-      <div class="dropdown">
+    <!-- Documentation -->
+    <div class="dropdown">
         <a href="#" class="dropdown-trigger">
-          <i class="fas fa-file-alt"></i>Documentation
-          <i class="fas fa-chevron-right"></i>
+        <i class="fas fa-file-alt"></i>Documentation
+        <i class="fas fa-chevron-right"></i>
         </a>
         <div class="dropdown-content">
-          <a href="#"><i class="fas fa-camera"></i>Photos</a>
-          <a href="#"><i class="fas fa-handshake"></i>Loans</a>
+        <a href="{% url 'table_view' model_name='Sites' %}"><i class="fas fa-camera"></i>Photos</a>
+        <a href="{% url 'table_view' model_name='Sites' %}"><i class="fas fa-handshake"></i>Loans</a>
         </div>
-      </div>
+    </div>
+
+    <hr>
+
     </div>
   </div>
 
-  <!-- Main Content -->
-  <div class="main-content">
-    <h2>Dashboard</h2>
-
-    {% block content %}
-    {% if user.is_authenticated %}
-    Hi {{ user.username }}!
-    <form action="{% url 'logout' %}" method="post">
-      {% csrf_token %}
-      <button type="submit">Log Out</button>
-    </form>
-    {% else %}
-    <p>You are not logged in</p>
-    <a href="{% url 'login' %}">Log In</a>
-    {% endif %}
-    {% endblock %}
-    <!-- Content -->
-    <div class="stats-container"> 
-      <div class="stats">
-        <div class="stat-card">
-          <div class="stat-values">
-            <h3>Total Sites</h3>
-            <h1>123</h1>
-          </div>
-          <i class="fas fa-map"></i>
-        </div>
-        <div class="stat-card">
-          <div class="stat-values">
-            <h3>Total Areas</h3>
-            <h1>45</h1>
-          </div>
-          <i class="fas fa-layer-group"></i>
-        </div>
-        <div class="stat-card">
-          <div class="stat-values">
-            <h3>Total Artifacts</h3>
-            <h1>678</h1>
-          </div>
-          <i class="fas fa-archive"></i>
-        </div>
-      </div>
-    </div> 
-
-    <!-- New Container for Additional Information -->
-    <div class="info-container">
-      <div class="info-card">
-        <div class="stat-values">
-          <h3>Artifact of the Day</h3>
-          <p>Artifact Name: Ancient Vase</p>
-          <p>Description: A beautifully crafted vase from the 5th century BC.</p>
-          <p>Location: Greece</p>
-        </div>
-        <div class="artifact-photo">
-          <img src="{% static 'images/ancient_vase.jpeg' %}" alt="Ancient Vase" class="resized-image">
-        </div>
-      </div>
-
-      <div class="info-card">
-        <div class="stat-values">
-          <h3>Recent Activity</h3>
-          <p>Added a new site - 2 hours ago</p>
-          <p>Added a new area - 3 hours ago</p>
-          <p>Added a new artifact - 4 hours ago</p>
-        </div>
-      </div>
+  <!-- Main Container -->
+  <div class="main-container">
+    <!-- Header -->
+    <div class="header">
+      {% if user.is_authenticated %}
+          <form action="{% url 'logout' %}" method="post" style="margin-left: auto;">
+              {% csrf_token %}
+              <button type="submit" class="auth-button">Log Out</button>
+          </form>
+      {% else %}
+          <a href="{% url 'login' %}" class="auth-button">Log In</a>
+      {% endif %}
+      <i class="fas fa-bars" id="menu-toggle"></i>
     </div>
 
-    <div class="info-container">
-      <div class="info-card">
-        <div class="stat-values">
-          <h3>Documentation</h3>
-          <p>Welcome to the U of T Archeology Dashboard! This is where you can view and manage all the sites, areas, and artifacts in the system. Use the sidebar to navigate to different sections of the dashboard. You can add new sites, areas, and artifacts, as well as view and edit existing data. If you need help, click on the "Need Help?" section in the sidebar. For more information, please refer to the user manual.</p>
-          <a href="#">User Manual</a>
+    <hr>
+
+    <div class="container">
+        <div class="title">
+            <h1>Dashboard</h1>
+            {% if user.is_authenticated %}
+            <p style="font-size: 0.8em; margin-top: 5px;">Welcome, {{ user.username }}</p>
+            {% endif %}
         </div>
-      </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+          <div class="stats-container"> 
+              <div class="stats">
+                  <div class="stat-card">
+                      <div class="stat-values">
+                          <h3>Total Sites</h3>
+                          <h1>123</h1>
+                      </div>
+                      <i class="fas fa-map"></i>
+                  </div>
+                  <div class="stat-card">
+                      <div class="stat-values">
+                          <h3>Total Areas</h3>
+                          <h1>45</h1>
+                      </div>
+                      <i class="fas fa-layer-group"></i>
+                  </div>
+                  <div class="stat-card">
+                      <div class="stat-values">
+                          <h3>Total Artifacts</h3>
+                          <h1>678</h1>
+                      </div>
+                      <i class="fas fa-archive"></i>
+                  </div>
+              </div>
+          </div> 
+
+          <!-- New Container for Additional Information -->
+          <div class="info-container">
+            <div class="info-card">
+                <div class="stat-values">
+                    <h3>Artifact of the Day</h3>
+                    <p>Artifact Name: Ancient Vase</p>
+                    <p>Description: A beautifully crafted vase from the 5th century BC.</p>
+                    <p>Location: Greece</p>
+                </div>
+                <div class="artifact-photo">
+                    <img src="{% static 'images/ancient_vase.jpeg' %}" alt="Ancient Vase" class="resized-image">
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="stat-values">
+                    <h3>Recent Activity</h3>
+                    <p>Added a new site - 2 hours ago</p>
+                    <p>Added a new area - 3 hours ago</p>
+                    <p>Added a new artifact - 4 hours ago</p>
+                </div>
+                <i class="fas fa-history"></i>
+            </div>
+
+            <div class="info-container">
+              <div class="info-card">
+                  <div class="stat-values">
+                      <h3>Documentation</h3>
+                      <p>Welcome to the U of T Archeology Dashboard! This is where you can view and manage all the sites, areas, and artifacts in the system. Use the sidebar to navigate to different sections of the dashboard.</p>
+                      <p>You can add new sites, areas, and artifacts, as well as view and edit existing data. If you need help, click on the "Need Help?" section in the sidebar.</p>
+                      <a href="#" style="color: #5a7d5a; text-decoration: none; font-weight: 600; margin-top: 10px; display: inline-block;">User Manual <i class="fas fa-arrow-right" style="font-size: 0.8em;"></i></a>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
     </div>
   </div>
+
 
   <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function() {
