@@ -14,8 +14,8 @@ This Django-based web application serves as a digital platform for presenting an
 ## Setup and Installation
 1. Create a virtual environment:
     ```sh
-    python -m venv myenv
-    source myenv/bin/activate  # On Windows: myenv\Scripts\activate
+    python -m venv venv
+    source venv/bin/activate  # On Windows: myenv\Scripts\activate
     ```
 2. Install dependencies:
     ```sh

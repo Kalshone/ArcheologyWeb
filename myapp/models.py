@@ -509,8 +509,8 @@ class Areas(models.Model):
     areaNo = models.CharField(max_length=20, primary_key=True)
     
     def __str__(self):
-        return f"{self.siteNo} - Area {self.areaNo}"
-
+        return f"{self.areaNo}"
+    
 class Loci(models.Model):
     siteNo = models.ForeignKey(Sites, on_delete=models.CASCADE)
     areaNo = models.ForeignKey(Areas, on_delete=models.CASCADE)
@@ -519,32 +519,43 @@ class Loci(models.Model):
         max_length=2,
         choices=LociType.choices
     )
-    colour = models.CharField(max_length=50)  # hue/value/chroma
+    colour = models.CharField(max_length=50, blank=True, null=True)
     inclusions = models.CharField(
         max_length=2,
-        choices=InclusionType.choices
+        choices=InclusionType.choices,
+        blank=True,
+        null=True
     )
-    compaction = models.CharField(max_length=50)
+    compaction = models.CharField(max_length=50, blank=True, null=True)
     roundness = models.CharField(
         max_length=2,
-        choices=RoundnessType.choices
+        choices=RoundnessType.choices,
+        blank=True,
+        null=True
     )
     density = models.CharField(
         max_length=2,
-        choices=DensityType.choices
+        choices=DensityType.choices,
+        blank=True,
+        null=True
     )
     texture = models.CharField(
         max_length=4,
-        choices=TextureType.choices
+        choices=TextureType.choices,
+        blank=True,
+        null=True
     )
     excavatedVolume = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     comments = models.TextField(blank=True)
-    
+    strat_comment = models.TextField(blank=True, null=True)
+    highest_level = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    lowest_level = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    num_gufaf = models.IntegerField(null=True, blank=True)
+    vol_gufaf = models.DecimalField(max_digits=10, decimal_places=4, null=True, blank=True)
+    vol_levels = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+
     def __str__(self):
-        return f"{self.siteNo} - Area {self.areaNo} - Locus {self.locus}"
-    
-    class Meta:
-        verbose_name_plural = "Loci"
+        return f"{self.locus}"
 
 class Bags(models.Model):
     siteNo = models.ForeignKey(Sites, on_delete=models.CASCADE)
@@ -552,10 +563,7 @@ class Bags(models.Model):
     bagNo = models.CharField(max_length=20, primary_key=True)
     
     def __str__(self):
-        return f"{self.siteNo} - Area {self.areaNo} - Bag {self.bagNo}"
-    
-    class Meta:
-        verbose_name_plural = "Bags"
+        return f"{self.bagNo}"
 
 class Artifacts(models.Model):
     siteNo = models.ForeignKey(Sites, on_delete=models.CASCADE)
